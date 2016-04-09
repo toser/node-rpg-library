@@ -2,8 +2,6 @@ import * as player from './player';
 import * as item from './item';
 
 
-/*console.log(item.newItem(item.types.WEAPON, 'sword'));*/
-
 let toni = player.newPlayer('Toni', 'cat'),
     sword = item.newItem('rusty old sword', item.types.WEAPON),
     helmet = item.newItem('broken helmet', item.types.ARMOR);
@@ -30,6 +28,11 @@ console.log(
     `Tonis speed is ${toni.speed.get()}`
 );
 
+toni.speed.down(2);
+
+console.log(
+    `Tonis speed is now ${toni.speed.get()}`
+);
 
 toni.items.add(sword)
     .items.add(helmet)

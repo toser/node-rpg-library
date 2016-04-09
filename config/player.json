@@ -1,6 +1,6 @@
 {
   "name": "John Doe",
-  "skills": {
+  "properties": {
     "health": 100,
     "rank": 1,
     "attack": 1,

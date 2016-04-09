@@ -1,41 +1,17 @@
 import {EventEmitter} from 'events';
 import {getConfig, copyObject} from 'helptos';
+import * as properties from './properties';
 import * as race from './race';
 
 const config = getConfig('../config/player.json', __dirname);
 
-const skills = (skill, state) => ({
-    get: () => state.skills[skill],
-    up: (val = 1) => {
-        state.skills[skill] = state.skills[skill] + val;
-        return state.player;
-    },
-    down: (val = 1) => {
 
-        // ToDo: check if skills can be negative. imo: why not
-        /*if (state.skills[skill] - val < 0) {
-
-         state.player.event.emit('failure', {
-         action: `${skill} down`,
-         data: {
-         player: state
-         }
-         });
-         }
-         else {*/
-        state.skills[skill] = state.skills[skill] - val;
-        /*}*/
-
-        return state.player;
-    }
-});
-
-const health = (state) => Object.assign({}, skills('health', state)),
-    rank = (state) => Object.assign({}, skills('rank', state)),
-    attack = (state) => Object.assign({}, skills('attack', state)),
-    defense = (state) => Object.assign({}, skills('defense', state)),
-    dexterity = (state) => Object.assign({}, skills('dexterity', state)),
-    speed = (state) => Object.assign({}, skills('speed', state));
+const health = (state) => Object.assign({}, properties.numerical('health', state.properties, state)),
+    rank = (state) => Object.assign({}, properties.numerical('rank', state.properties, state)),
+    attack = (state) => Object.assign({}, properties.numerical('attack', state.properties, state)),
+    defense = (state) => Object.assign({}, properties.numerical('defense', state.properties, state)),
+    dexterity = (state) => Object.assign({}, properties.numerical('dexterity', state.properties, state)),
+    speed = (state) => Object.assign({}, properties.numerical('speed', state.properties, state));
 
 
 const slots = (state) => ({
@@ -45,13 +21,13 @@ const slots = (state) => ({
         state.inventory.slots.total = state.inventory.slots.total + val;
         state.inventory.slots.free = state.inventory.slots.free + val;
 
-        return state.player;
+        return state.element;
     },
     down: (val = 1) => {
 
         if (state.inventory.slots.free - val < 0) {
 
-            state.player.event.emit('failure', {
+            state.element.event.emit('failure', {
                 action: 'slots down',
                 data: {
                     player: state
@@ -64,13 +40,13 @@ const slots = (state) => ({
             state.inventory.slots.free = state.inventory.slots.free - val;
         }
 
-        return state.player;
+        return state.element;
     },
     fill: (val = 1) => {
 
         if (state.inventory.slots.free - val < 0) {
 
-            state.player.event.emit('failure', {
+            state.element.event.emit('failure', {
                 action: 'slots fill',
                 data: {
                     player: state
@@ -82,7 +58,7 @@ const slots = (state) => ({
             state.inventory.slots.free = state.inventory.slots.free - val;
         }
 
-        return state.player;
+        return state.element;
     },
     empty: (val = 1) => {
 
@@ -93,7 +69,7 @@ const slots = (state) => ({
             state.inventory.slots.free = state.inventory.slots.free + val;
         }
 
-        return state.player;
+        return state.element;
     }
 });
 
@@ -107,7 +83,7 @@ const items = (state) => ({
 
         if (playerRank.get() < item.rank) {
 
-            state.player.event.emit('failure', {
+            state.element.event.emit('failure', {
                 action: 'add item',
                 type: 'rank',
                 data: {
@@ -118,7 +94,7 @@ const items = (state) => ({
         }
         else if (!item.collectible.get()) {
 
-            state.player.event.emit('failure', {
+            state.element.event.emit('failure', {
                 action: 'add item',
                 type: 'collectable',
                 data: {
@@ -129,7 +105,7 @@ const items = (state) => ({
         }
         else if (playerSlots.fill(item.slots) === false) {
 
-            state.player.event.emit('failure', {
+            state.element.event.emit('failure', {
                 action: 'add item',
                 type: 'slots',
                 data: {
@@ -142,7 +118,7 @@ const items = (state) => ({
             state.inventory.items.push(item);
         }
 
-        return state.player;
+        return state.element;
     },
     remove: (item) => {
 
@@ -159,7 +135,7 @@ const name = (state) => ({
         if (name) {
             state.name = name;
         }
-        return state.player;
+        return state.element;
     }
 });
 
@@ -170,7 +146,7 @@ export let newPlayer = (playerName, playerRace) => {
 
     state.name = playerName;
     state.race = Object.assign({}, race.getRace(playerRace));
-    state.player = {
+    state.element = {
         name: name(state),
         health: health(state),
         rank: rank(state),
@@ -183,5 +159,5 @@ export let newPlayer = (playerName, playerRace) => {
         event: new EventEmitter()
     };
 
-    return state.player;
+    return state.element;
 };
