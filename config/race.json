@@ -1,7 +1,7 @@
 {
-  "types": [
+  "templates": [
     {
-      "name": "cat",
+      "type": "cat",
       "skills": {
         "attack": 1,
         "defense": 2,
@@ -10,7 +10,7 @@
       }
     },
     {
-      "name": "dog",
+      "type": "dog",
       "skills": {
         "attack": 3,
         "defense": 2,
