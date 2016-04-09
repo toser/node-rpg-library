@@ -18,8 +18,8 @@ export let parse = (player, command, world) => {
     for (let cmd in commands) {
         let regExp = commands[cmd].cmdRegExp || null;
         if (regExp && regExp.test(command)) {
-            let output = commands[cmd].run(player, command, world);
-            output = output.concat(output);
+            let res = commands[cmd].run(player, command, world);
+            output = output.concat(res);
         }
     }
 
