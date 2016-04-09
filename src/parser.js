@@ -1,8 +1,10 @@
 
-import * as Help from './commands/help'
+import * as Help from './commands/help';
+import * as Quit from './commands/quit';
 
 const commands = [
-    Help
+    Help,
+    Quit
 ];
 
 /**
@@ -24,7 +26,7 @@ export let parse = (player, command, world) => {
     }
 
     if (output.length === 0)
-        return [ 'unknown command' ];
+        return [ 'unknown command :(' ];
 
     return output;
 };

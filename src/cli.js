@@ -16,7 +16,8 @@ stdin.addListener('data', (data) => {
     try {
         let responses = rpg.parse(user, data.toString().trim());
         console.log(responses.join(EOL));
-        process.stdout.write('> ');
+        if (responses.indexOf('bye') === -1)
+            process.stdout.write('> ');
     } catch(error) {
         console.log('error: ' + error);
         process.stdout.write('> ');
