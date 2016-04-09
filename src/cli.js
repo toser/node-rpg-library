@@ -4,7 +4,8 @@ import * as RPG from './rpg';
 
 // initialized
 
-const rpg = RPG.newRPG();
+const rpg = RPG.newRPG(),
+    user = 'player';
 
 // hooking up the stdin for the user commands
 let stdin = process.openStdin();
@@ -13,7 +14,7 @@ console.log('initialized. write your commands, e.g. "help" (confirm by pressing 
 process.stdout.write('> ');
 stdin.addListener('data', (data) => {
     try {
-        let responses = rpg.parse(data.toString().trim());
+        let responses = rpg.parse(user, data.toString().trim());
         console.log(responses.join(EOL));
         process.stdout.write('> ');
     } catch(error) {

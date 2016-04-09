@@ -11,5 +11,5 @@ export let newWorld = (databaseFile) => {
         //TODO
     };
 
-    return world;
+    return state.world;
 };

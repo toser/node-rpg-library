@@ -13,7 +13,7 @@ export let newRPG = (databaseFile) => {
 
     state.world = World.newWorld(databaseFile);
     state.rpg = {
-        parse = (command) => { return Parser.parse(command, state.world); }
+        parse : (player, command) => { return Parser.parse(player, command, state.world); }
     };
 
     // TODO
