@@ -1,0 +1,18 @@
+{
+  "name": "John Doe",
+  "skills": {
+    "health": 100,
+    "rank": 1,
+    "attack": 1,
+    "defense": 1,
+    "dexterity": 1,
+    "speed": 1
+  },
+  "inventory": {
+    "slots": {
+      "total": 30,
+      "free": 30
+    },
+    "items": []
+  }
+}

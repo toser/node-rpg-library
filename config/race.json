@@ -1,0 +1,22 @@
+{
+  "types": [
+    {
+      "name": "cat",
+      "skills": {
+        "attack": 1,
+        "defense": 2,
+        "skill": 3,
+        "speed": 3
+      }
+    },
+    {
+      "name": "dog",
+      "skills": {
+        "attack": 3,
+        "defense": 2,
+        "skill": 1,
+        "speed": 2
+      }
+    }
+  ]
+}
