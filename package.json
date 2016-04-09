@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "description": "A nodejs framework for text based role-playing games",
   "main": "lib/index.js",
+  "bin": {
+    "rpg-cli": "bin/rpg-cli"
+  },
   "scripts": {
+    "cli": "npm run build && node bin/rpg-cli",
     "start": "npm run build && node lib/index.js",
     "build": "babel src -d lib"
   },
@@ -17,7 +21,8 @@
   "author": "Toni Feistauer",
   "license": "MIT",
   "dependencies": {
-    "helptos": "^1.0.9"
+    "helptos": "^1.0.9",
+    "nedb": "^1.8.0"
   },
   "devDependencies": {
     "babel-cli": "^6.6.5",
