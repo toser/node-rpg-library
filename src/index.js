@@ -4,79 +4,36 @@ import * as item from './item';
 
 /*console.log(item.newItem(item.types.WEAPON, 'sword'));*/
 
-let p = player.newPlayer('Toni', 'cat'),
-    i = item.newItem(item.types.WEAPON, 'sword');
+let toni = player.newPlayer('Toni', 'cat'),
+    sword = item.newItem('rusty old sword', item.types.WEAPON),
+    helmet = item.newItem('broken helmet', item.types.ARMOR);
 
-p.event.on('failure', function (e) {
+toni.rank.up(3)
+    .speed.up(20);
 
-    console.log(`failure at ${e.action}`);
+
+sword.slots.up(8)
+    .attack.up(16)
+    .defense.up(2)
+    .speed.down(3);
+
+helmet.slots.up(4)
+    .defense.up(10)
+    .speed.down(2);
+
+toni.event.on('failure', function (e) {
+
+    console.log(`failure at ${e.action}. type: ${e.type}`);
 });
 
-console.log(p.items.add({
-        rank: 1,
-        collectible: true,
-        slots: 70
-    })
-    .health.down(200)
-    .health.is());
+console.log(
+    `Tonis speed is ${toni.speed.get()}`
+);
 
 
-/*console.log(
- p.rank.up(3)
- .rank.is()
- );
-
- console.log(
- p.slots.up(10)
- .slots.fill(7)
- .slots.free()
- );*/
-
-/*let p1 = player.newPlayer('Toni', 'cat'),
- p2 = player.newPlayer('Basti', 'cat')c,
- p3 = player.newPlayer('Muh', 'dog');*/
-
-
-
-/*console.log(p1.getRank(), p1.getAttack(), p1.getDefence(), p1.getSkill(), p1.getSpeed());*/
-
-/*
- console.log('---- P1');
- console.log(p1.rank.is());
- console.log(p1.rank.up(3));
- console.log(p1.rank.is());
- console.log('---- P1');
-
- console.log('---- P2');
- console.log(p2.rank.is());
- console.log(p2.rank.up(17));
- console.log(p2.rank.is());
- console.log('---- P2');
-
- console.log('---- P1');
- console.log(p1.rank.is());
- console.log('---- P1');
-
-
- console.log(p1.slots.total(), p1.slots.free());
- console.log(p1.slots.add(4));
- console.log(p1.slots.total(), p1.slots.free());
- console.log(p1.slots.remove(10));
- console.log(p1.slots.total(), p1.slots.free());
-
-
- console.log(p1.slots.fill(15));
- console.log(p1.slots.free());
- console.log(p1.slots.empty(10));
- console.log(p1.slots.free());
-
-
- console.log(p1.slots.free());
- console.log(p1.items.add({rank: 1, slots: 3}));
- console.log(p1.slots.free());
- console.log(p1.items.list());
- */
-
-
-
-
+toni.items.add(sword)
+    .items.add(helmet)
+    .items.list().forEach(
+    item => {
+        console.log(`${toni.name.get()} has a ${item.name.get()} with ${item.attack.get()} attack and ${item.defense.get()} defense points.`);
+    });

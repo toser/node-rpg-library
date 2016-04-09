@@ -3,31 +3,42 @@
     {
       "type": "weapon",
       "name": "weapon",
-      "rank": 1,
-      "slots": 1,
-      "attack": 1,
-      "defense": 0,
-      "collectible": true
+      "collectible": true,
+      "properties": {
+        "rank": 0,
+        "slots": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "dexterity": 0
+      }
     },
     {
       "type": "armor",
       "name": "armor",
-      "rank": 1,
-      "slots": 1,
-      "attack": 0,
-      "defense": 1,
-      "collectible": true
+      "collectible": true,
+      "properties": {
+        "rank": 0,
+        "slots": 0,
+        "attack": 0,
+        "defense": 0,
+        "speed": 0,
+        "dexterity": 0
+      }
     },
     {
       "type": "consumable",
       "name": "consumable",
-      "slots": 1,
-      "time": 0,
-      "attack": 0,
-      "defanse": 0,
-      "dexterity": 0,
-      "speed": 0,
-      "collectible": true
+      "collectible": true,
+      "properties": {
+        "rank": 0,
+        "slots": 0,
+        "attack": 0,
+        "defense": 0,
+        "dexterity": 0,
+        "speed": 0,
+        "time": 0
+      }
     }
   ]
 }

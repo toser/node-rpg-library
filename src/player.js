@@ -2,26 +2,29 @@ import {EventEmitter} from 'events';
 import {getConfig, copyObject} from 'helptos';
 import * as race from './race';
 
+const config = getConfig('../config/player.json', __dirname);
+
 const skills = (skill, state) => ({
-    is: () => state.skills[skill],
+    get: () => state.skills[skill],
     up: (val = 1) => {
         state.skills[skill] = state.skills[skill] + val;
         return state.player;
     },
     down: (val = 1) => {
 
-        if (state.skills[skill] - val < 0) {
+        // ToDo: check if skills can be negative. imo: why not
+        /*if (state.skills[skill] - val < 0) {
 
-            state.player.event.emit('failure', {
-                action: `${skill} down`,
-                data: {
-                    player: state
-                }
-            });
-        }
-        else {
-            state.skills[skill] = state.skills[skill] - val;
-        }
+         state.player.event.emit('failure', {
+         action: `${skill} down`,
+         data: {
+         player: state
+         }
+         });
+         }
+         else {*/
+        state.skills[skill] = state.skills[skill] - val;
+        /*}*/
 
         return state.player;
     }
@@ -102,7 +105,7 @@ const items = (state) => ({
         let playerSlots = slots(state),
             playerRank = rank(state);
 
-        if (playerRank.is() < item.rank) {
+        if (playerRank.get() < item.rank) {
 
             state.player.event.emit('failure', {
                 action: 'add item',
@@ -113,7 +116,7 @@ const items = (state) => ({
                 }
             });
         }
-        else if (!item.collectible) {
+        else if (!item.collectible.get()) {
 
             state.player.event.emit('failure', {
                 action: 'add item',
@@ -150,17 +153,25 @@ const items = (state) => ({
     }
 });
 
+const name = (state) => ({
+    get: () => state.name,
+    set: (name) => {
+        if (name) {
+            state.name = name;
+        }
+        return state.player;
+    }
+});
 
-const config = getConfig('../config/player.json', __dirname);
 
-
-export let newPlayer = (name, playerRace) => {
+export let newPlayer = (playerName, playerRace) => {
 
     let state = copyObject(config);
 
-    state.name = name;
+    state.name = playerName;
     state.race = Object.assign({}, race.getRace(playerRace));
     state.player = {
+        name: name(state),
         health: health(state),
         rank: rank(state),
         attack: attack(state),
