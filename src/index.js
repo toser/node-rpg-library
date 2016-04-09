@@ -2,8 +2,35 @@ import * as player from './player';
 import * as item from './item';
 
 
-console.log(item.newItem(item.types.WEAPON, 'sword'));
-console.log(player.newPlayer('Toni', 'cat'));
+/*console.log(item.newItem(item.types.WEAPON, 'sword'));*/
+
+let p = player.newPlayer('Toni', 'cat'),
+    i = item.newItem(item.types.WEAPON, 'sword');
+
+p.event.on('failure', function (e) {
+
+    console.log(`failure at ${e.action}`);
+});
+
+console.log(p.items.add({
+        rank: 1,
+        collectible: true,
+        slots: 70
+    })
+    .health.down(200)
+    .health.is());
+
+
+/*console.log(
+ p.rank.up(3)
+ .rank.is()
+ );
+
+ console.log(
+ p.slots.up(10)
+ .slots.fill(7)
+ .slots.free()
+ );*/
 
 /*let p1 = player.newPlayer('Toni', 'cat'),
  p2 = player.newPlayer('Basti', 'cat')c,

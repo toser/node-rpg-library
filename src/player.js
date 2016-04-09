@@ -1,92 +1,145 @@
-import * as race from './race';
+import {EventEmitter} from 'events';
 import {getConfig, copyObject} from 'helptos';
+import * as race from './race';
 
-const skills = (skill, {skills}) => ({
-    is: () => skills[skill],
-    up: (val = 1) => skills[skill] = skills[skill] + val,
-    down: (val = 1) => skills[skill] = skills[skill] - val
-});
-
-const health = (player) => Object.assign({}, skills('health', player)),
-    rank = (player) => Object.assign({}, skills('rank', player)),
-    attack = (player) => Object.assign({}, skills('attack', player)),
-    defense = (player) => Object.assign({}, skills('defense', player)),
-    dexterity = (player) => Object.assign({}, skills('dexterity', player)),
-    speed = (player) => Object.assign({}, skills('speed', player));
-
-
-const slots = ({inventory: {slots}}) => ({
-    total: () => slots.total,
-    free: () => slots.free,
-    add: (val = 1) => {
-        slots.total = slots.total + val;
-        slots.free = slots.free + val;
-
-        return slots.total;
+const skills = (skill, state) => ({
+    is: () => state.skills[skill],
+    up: (val = 1) => {
+        state.skills[skill] = state.skills[skill] + val;
+        return state.player;
     },
-    remove: (val = 1) => {
+    down: (val = 1) => {
 
-        if (slots.free - val < 0) {
-            return false;
+        if (state.skills[skill] - val < 0) {
+
+            state.player.event.emit('failure', {
+                action: `${skill} down`,
+                data: {
+                    player: state
+                }
+            });
+        }
+        else {
+            state.skills[skill] = state.skills[skill] - val;
         }
 
-        slots.total = slots.total - val;
-        slots.free = slots.free - val;
+        return state.player;
+    }
+});
 
-        return slots.total;
+const health = (state) => Object.assign({}, skills('health', state)),
+    rank = (state) => Object.assign({}, skills('rank', state)),
+    attack = (state) => Object.assign({}, skills('attack', state)),
+    defense = (state) => Object.assign({}, skills('defense', state)),
+    dexterity = (state) => Object.assign({}, skills('dexterity', state)),
+    speed = (state) => Object.assign({}, skills('speed', state));
+
+
+const slots = (state) => ({
+    total: () => state.inventory.slots.total,
+    free: () => state.inventory.slots.free,
+    up: (val = 1) => {
+        state.inventory.slots.total = state.inventory.slots.total + val;
+        state.inventory.slots.free = state.inventory.slots.free + val;
+
+        return state.player;
+    },
+    down: (val = 1) => {
+
+        if (state.inventory.slots.free - val < 0) {
+
+            state.player.event.emit('failure', {
+                action: 'slots down',
+                data: {
+                    player: state
+                }
+            });
+        }
+        else {
+
+            state.inventory.slots.total = state.inventory.slots.total - val;
+            state.inventory.slots.free = state.inventory.slots.free - val;
+        }
+
+        return state.player;
     },
     fill: (val = 1) => {
 
-        if (slots.free - val < 0) {
-            return false;
+        if (state.inventory.slots.free - val < 0) {
+
+            state.player.event.emit('failure', {
+                action: 'slots fill',
+                data: {
+                    player: state
+                }
+            });
+        }
+        else {
+
+            state.inventory.slots.free = state.inventory.slots.free - val;
         }
 
-        return slots.free = slots.free - val;
+        return state.player;
     },
     empty: (val = 1) => {
 
-        if (slots.free + val > slots.total) {
-            return slots.free = slots.total;
+        if (state.inventory.slots.free + val > state.inventory.slots.total) {
+            state.inventory.slots.free = state.inventory.slots.total;
+        }
+        else {
+            state.inventory.slots.free = state.inventory.slots.free + val;
         }
 
-        return slots.free = slots.free + val;
+        return state.player;
     }
 });
 
 
-const items = (player) => ({
-    list: () => player.inventory.items,
+const items = (state) => ({
+    list: () => state.inventory.items,
     add: (item) => {
 
-        let playerSlots = slots(player),
-            playerRank = rank(player);
+        let playerSlots = slots(state),
+            playerRank = rank(state);
 
         if (playerRank.is() < item.rank) {
 
-            return {
-                error: 'rank',
-                item: item
-            }
+            state.player.event.emit('failure', {
+                action: 'add item',
+                type: 'rank',
+                data: {
+                    player: state,
+                    item: item
+                }
+            });
+        }
+        else if (!item.collectible) {
+
+            state.player.event.emit('failure', {
+                action: 'add item',
+                type: 'collectable',
+                data: {
+                    player: state,
+                    item: item
+                }
+            });
+        }
+        else if (playerSlots.fill(item.slots) === false) {
+
+            state.player.event.emit('failure', {
+                action: 'add item',
+                type: 'slots',
+                data: {
+                    player: state,
+                    item: item
+                }
+            });
+        }
+        else {
+            state.inventory.items.push(item);
         }
 
-        if (item.type === 'locked') {
-
-            return {
-                error: 'type',
-                item: item
-            }
-        }
-
-        if (playerSlots.fill(item.slots) === false) {
-            return {
-                error: 'slots',
-                item: item
-            };
-        }
-
-        player.inventory.items.push(item);
-
-        return item;
+        return state.player;
     },
     remove: (item) => {
 
@@ -107,8 +160,7 @@ export let newPlayer = (name, playerRace) => {
 
     state.name = name;
     state.race = Object.assign({}, race.getRace(playerRace));
-
-    return {
+    state.player = {
         health: health(state),
         rank: rank(state),
         attack: attack(state),
@@ -116,6 +168,9 @@ export let newPlayer = (name, playerRace) => {
         dexterity: dexterity(state),
         speed: speed(state),
         slots: slots(state),
-        items: items(state)
+        items: items(state),
+        event: new EventEmitter()
     };
+
+    return state.player;
 };
