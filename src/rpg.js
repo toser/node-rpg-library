@@ -12,9 +12,11 @@ export let newRPG = (databaseFile) => {
     let state = {};
 
     state.world = World.newWorld(databaseFile);
-    state.parse = (command) => { return Parser.parse(command, state.world); };
+    state.rpg = {
+        parse = (command) => { return Parser.parse(command, state.world); }
+    };
 
     // TODO
 
-    return state;
+    return state.rpg;
 };

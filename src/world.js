@@ -7,8 +7,9 @@ export let newWorld = (databaseFile) => {
     let state = {};
 
     state.database = new Database({ filename: databaseFile || 'rpg.db', autoload: true });
+    state.world = {
+        //TODO
+    };
 
-    //TODO
-
-    return state;
+    return world;
 };
