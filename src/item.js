@@ -9,7 +9,9 @@ const armorNames = getConfig('../config/armor-names.json', __dirname);
 const consumableNames = getConfig('../config/consumable-names.json', __dirname);
 
 // assign numerical getter and setter to properties
-const rank = (state) => Object.assign({}, properties.numerical('rank', state.properties, state)),
+const name = (state) => Object.assign({}, properties.mixed('name', state, state)),
+    collectible = (state) => Object.assign({}, properties.boolean('name', state, state)),
+    rank = (state) => Object.assign({}, properties.numerical('rank', state.properties, state)),
     slots = (state) => Object.assign({}, properties.numerical('slots', state.properties, state)),
     health = (state) => Object.assign({}, properties.numerical('health', state.properties, state)),
     attack = (state) => Object.assign({}, properties.numerical('attack', state.properties, state)),
@@ -19,23 +21,23 @@ const rank = (state) => Object.assign({}, properties.numerical('rank', state.pro
     time = (state) => Object.assign({}, properties.numerical('time', state.properties, state));
 
 
-const collectible = (state) => ({
-    get: () => state.collectible,
-    set: (collectible) => {
-        state.collectible = !!collectible;
-        return state.element;
-    }
-});
+/*const collectible = (state) => ({
+ get: () => state.collectible,
+ set: (collectible) => {
+ state.collectible = !!collectible;
+ return state.element;
+ }
+ });*/
 
-const name = (state) => ({
-    get: () => state.name,
-    set: (name) => {
-        if (name) {
-            state.name = name;
-        }
-        return state.element;
-    }
-});
+/*const name = (state) => ({
+ get: () => state.name,
+ set: (name) => {
+ if (name) {
+ state.name = name;
+ }
+ return state.element;
+ }
+ });*/
 
 const createName = (names) => {
 
@@ -100,7 +102,7 @@ export const createWeapon = (averages) => {
 
     // Todo: get the ranges around averages via a config or something
     weapon
-        .rank.up(randomInt(averages.rank + 2, averages.rank - 2))
+        .rank.up(randomInt(averages.rank + 1, averages.rank - 2))
         .slots.up(randomInt(averages.slots + 4, averages.slots - 4))
         .attack.up(randomInt(averages.attack + 10, averages.attack - 10))
         .defense.up(randomInt(averages.defense + 2, averages.defense - 2))
@@ -116,7 +118,7 @@ export const createArmor = (averages) => {
 
     // Todo: get the ranges around averages via a config or something
     armor
-        .rank.up(randomInt(averages.rank + 2, averages.rank - 2))
+        .rank.up(randomInt(averages.rank + 1, averages.rank - 2))
         .slots.up(randomInt(averages.slots + 3, averages.slots - 3))
         .attack.up(randomInt(averages.attack + 2, averages.attack - 2))
         .defense.up(randomInt(averages.defense + 10, averages.defense - 5))
@@ -139,7 +141,7 @@ export const createConsumable = (averages) => {
 
     // Todo: get the ranges around averages via a config or something
     consumable
-        .rank.up(randomInt(averages.rank + 2, averages.rank - 3))
+        .rank.up(randomInt(averages.rank + 1, averages.rank - 3))
         .slots.up(randomInt(averages.slots + 2, averages.slots - 1))
         .health.up(randomInt(60, 10))
         .time.up(randomInt(120, 30))
