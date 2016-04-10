@@ -2,11 +2,13 @@
   "adjective": [
     "mighty",
     "rusty",
+    "broken",
     "magical",
     "horrible",
     "violent"
   ],
   "attribute": [
+    "shiny",
     "red",
     "blue",
     "yellow",
@@ -16,9 +18,12 @@
     "leather",
     "iron",
     "steel",
+    "wooden",
+    "golden",
     "cotton"
   ],
   "object": [
+    "cap",
     "helmet",
     "shoes",
     "gloves",
@@ -31,8 +36,17 @@
   "origin": [
     "of the sky",
     "from hell",
-    "of doom",
+    "of death",
+    "of war",
+    "of love",
+    "of blood",
+    "of guts",
+    "of rage",
+    "of souls",
+    "of doom™",
+    "of quake™",
     "of light",
+    "of darkness",
     "of your mother",
     "of the elves",
     "from africa",

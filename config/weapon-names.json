@@ -2,35 +2,55 @@
   "adjective": [
     "mighty",
     "rusty",
+    "broken",
     "magical",
     "horrible",
-    "violent"
+    "violent",
+    "two-handed"
   ],
   "attribute": [
+    "shiny",
     "big",
     "small",
+    "tiny",
     "red",
     "blue",
     "yellow",
     "green",
     "pink",
     "purple",
-    "leather"
+    "leather",
+    "iron",
+    "steel",
+    "wooden"
   ],
   "object": [
     "sword",
     "axe",
     "dagger",
+    "mace",
+    "spear",
+    "club",
     "whip",
     "cudgel",
     "hammer",
-    "knife"
+    "knife",
+    "staff"
   ],
   "origin": [
     "of the sky",
     "from hell",
-    "of doom",
+    "of death",
+    "of war",
+    "of love",
+    "of blood",
+    "of guts",
+    "of rage",
+    "of souls",
+    "of doom™",
+    "of quake™",
     "of light",
+    "of darkness",
     "of your mother",
     "of the elves",
     "from africa"
