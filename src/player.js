@@ -78,16 +78,13 @@ const items = (state) => ({
     list: () => state.inventory.items,
     add: (item) => {
 
-        let playerSlots = slots(state),
-            playerRank = rank(state);
-
-        if (playerRank.get() < item.rank) {
+        if (state.element.rank.get() < item.rank.get()) {
 
             state.element.event.emit('failure', {
                 action: 'add item',
                 type: 'rank',
                 data: {
-                    player: state,
+                    player: state.element,
                     item: item
                 }
             });
@@ -98,18 +95,18 @@ const items = (state) => ({
                 action: 'add item',
                 type: 'collectable',
                 data: {
-                    player: state,
+                    element: state.element,
                     item: item
                 }
             });
         }
-        else if (playerSlots.fill(item.slots) === false) {
+        else if (state.element.slots.fill(item.slots.get()) === false) {
 
             state.element.event.emit('failure', {
                 action: 'add item',
                 type: 'slots',
                 data: {
-                    player: state,
+                    element: state.element,
                     item: item
                 }
             });

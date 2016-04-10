@@ -32,6 +32,7 @@
       "collectible": true,
       "properties": {
         "rank": 0,
+        "health": 0,
         "slots": 0,
         "attack": 0,
         "defense": 0,

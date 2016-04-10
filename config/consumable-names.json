@@ -1,0 +1,34 @@
+{
+  "adjective": [
+    "slimy",
+    "old",
+    "magical",
+    "horrible",
+    "violent"
+  ],
+  "attribute": [
+    "red",
+    "blue",
+    "yellow",
+    "green",
+    "pink",
+    "purple"
+  ],
+  "object": [
+    "potion",
+    "apple",
+    "drink",
+    "meal",
+    "cheese",
+    "bread"
+  ],
+  "origin": [
+    "of the sky",
+    "from hell",
+    "of doom",
+    "of light",
+    "of your mother",
+    "of the elves",
+    "from africa"
+  ]
+}

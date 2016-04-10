@@ -1,0 +1,38 @@
+{
+  "adjective": [
+    "mighty",
+    "rusty",
+    "magical",
+    "horrible",
+    "violent"
+  ],
+  "attribute": [
+    "big",
+    "small",
+    "red",
+    "blue",
+    "yellow",
+    "green",
+    "pink",
+    "purple",
+    "leather"
+  ],
+  "object": [
+    "sword",
+    "axe",
+    "dagger",
+    "whip",
+    "cudgel",
+    "hammer",
+    "knife"
+  ],
+  "origin": [
+    "of the sky",
+    "from hell",
+    "of doom",
+    "of light",
+    "of your mother",
+    "of the elves",
+    "from africa"
+  ]
+}
