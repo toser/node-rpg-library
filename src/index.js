@@ -28,77 +28,22 @@ toni.event.on('success', (e) => {
 
 let myBox = box.createBox();
 
+console.log(`------- ${myBox.name.get()} Summary:`);
+console.log('short', myBox.summary.short());
+console.log('get', myBox.summary.get());
+console.log('items get', myBox.summary.items.get());
+console.log('items short', myBox.summary.items.short());
+
+
 myBox.items.list().map(item => item).forEach((item) => {
     toni.items.add(item);
     myBox.items.remove(item.name.get());
 });
 
 
+console.log(`------- ${toni.name.get()} Summary:`);
 console.log('short', toni.summary.short());
 console.log('get', toni.summary.get());
 console.log('long', toni.summary.long());
 console.log('items get', toni.summary.items.get());
 console.log('items short', toni.summary.items.short());
-
-/*
- let myBox = box.createBox();
-
- console.log(
- `\n|----------------------------------------\n| ${myBox.name.get()}\n|----------------------------------------\n` +
- '|\n| weapons:\n' +
- myBox.items.listWeapon().map(
- item => ({
- name: item.name.get(),
- type: item.type.get(),
- attack: item.attack.get(),
- defense: item.defense.get()
- }))
- .reduce((out, item) => {
- return out += `| -> ${item.name} with A ${item.attack} and D ${item.defense}\n`
- }, '') +
-
- '|\n| armor:\n' +
- myBox.items.listArmor().map(
- item => ({
- name: item.name.get(),
- type: item.type.get(),
- attack: item.attack.get(),
- defense: item.defense.get()
- }))
- .reduce((out, item) => {
- return out += `| -> ${item.name} with A ${item.attack} and D ${item.defense}\n`
- }, '') +
-
- '|\n| consumable:\n' +
- myBox.items.listConsumable().map(
- item => ({
- name: item.name.get(),
- type: item.type.get(),
- attack: item.attack.get(),
- defense: item.defense.get(),
- health: item.health.get(),
- dexterity: item.dexterity.get(),
- speed: item.speed.get(),
- time: item.time.get()
- }))
- .reduce((out, item) => {
- return out += `| -> ${item.name} with A ${item.attack}, D ${item.defense}, H ${item.health}, DX ${item.dexterity} and S ${item.speed} for ${item.time}sec\n`
- }, '') +
-
- '|\n|----------------------------------------\n'
- );
-
-
- myBox.items.list().map(item => item).forEach((item) => {
- toni.items.add(item);
- myBox.items.remove(item.name.get());
- });
-
-
- console.log(toni.items.list().map(item => item.name.get()));
-
- console.log('weapons', toni.items.listWeapon().map(item => item.name.get()));
- console.log('armor', toni.items.listArmor().map(item => item.name.get()));
- console.log('consumable', toni.items.listConsumable().map(item => item.name.get()));
-
- console.log(toni.slots.free());*/

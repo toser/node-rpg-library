@@ -59,10 +59,47 @@ const items = state => Object.assign({
     )
 );
 
+const summary = state => ({
+
+    get: () => {
+
+        const box = state.element;
+
+        return {
+            name: box.name.get(),
+            open: box.open.get(),
+            items: box.items.list().map(item => item.summary.short())
+        };
+    },
+    short: () => {
+
+        const box = state.element;
+
+        return {
+            name: box.name.get(),
+            open: box.open.get()
+        };
+    },
+    items: {
+        get: () => {
+
+            const box = state.element;
+
+            return box.items.list().map(item => item.summary.get());
+        },
+        short: () => {
+
+            const box = state.element;
+
+            return box.items.list().map(item => item.summary.short());
+        }
+    }
+
+});
+
 const newBox = (boxName) => {
 
     let state = copyObject(config);
-
 
     state.name = boxName;
 
@@ -70,6 +107,7 @@ const newBox = (boxName) => {
         name: name(state),
         open: open(state),
         items: items(state),
+        summary: summary(state),
         event: new EventEmitter()
     };
 
@@ -88,7 +126,7 @@ export const createBox = () => {
         items = [],
         i;
 
-    //ToDo: also set dexterity value to open box
+    //ToDo: also set dexterity value to open box (or find box - idk yet)
 
     for (i = 0; i < weaponsCount; i++) {
 
