@@ -1,13 +1,14 @@
 {
-  "adjective": [
+  "pre1": [
     "mighty",
     "rusty",
     "broken",
     "magical",
     "horrible",
-    "violent"
+    "violent",
+    "funny"
   ],
-  "attribute": [
+  "pre2": [
     "shiny",
     "red",
     "blue",
@@ -20,9 +21,10 @@
     "steel",
     "wooden",
     "golden",
-    "cotton"
+    "cotton",
+    "golden"
   ],
-  "object": [
+  "main": [
     "cap",
     "helmet",
     "shoes",
@@ -33,7 +35,7 @@
     "ring",
     "crown"
   ],
-  "origin": [
+  "post": [
     "of the sky",
     "from hell",
     "of death",

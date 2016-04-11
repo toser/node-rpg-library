@@ -1,15 +1,17 @@
 import {EventEmitter} from 'events';
 import {getConfig, copyObject, getFirstByType} from 'helptos';
 import {WeightedSelection, randomInt} from 'random-tools';
+import {createName} from './name';
 import * as properties from './properties';
 
 const config = getConfig('../config/item.json', __dirname);
-const weaponNames = getConfig('../config/weapon-names.json', __dirname);
-const armorNames = getConfig('../config/armor-names.json', __dirname);
-const consumableNames = getConfig('../config/consumable-names.json', __dirname);
+const weaponNames = getConfig('../config/names/weapon-names.json', __dirname);
+const armorNames = getConfig('../config/names/armor-names.json', __dirname);
+const consumableNames = getConfig('../config/names/consumable-names.json', __dirname);
 
 // assign numerical getter and setter to properties
 const name = (state) => Object.assign({}, properties.mixed('name', state, state)),
+    type = (state) => Object.assign({}, properties.fixed('type', state, state)),
     collectible = (state) => Object.assign({}, properties.boolean('name', state, state)),
     rank = (state) => Object.assign({}, properties.numerical('rank', state.properties, state)),
     slots = (state) => Object.assign({}, properties.numerical('slots', state.properties, state)),
@@ -20,67 +22,16 @@ const name = (state) => Object.assign({}, properties.mixed('name', state, state)
     speed = (state) => Object.assign({}, properties.numerical('speed', state.properties, state)),
     time = (state) => Object.assign({}, properties.numerical('time', state.properties, state));
 
-
-/*const collectible = (state) => ({
- get: () => state.collectible,
- set: (collectible) => {
- state.collectible = !!collectible;
- return state.element;
- }
- });*/
-
-/*const name = (state) => ({
- get: () => state.name,
- set: (name) => {
- if (name) {
- state.name = name;
- }
- return state.element;
- }
- });*/
-
-const createName = (names) => {
-
-    const ran1To2 = new WeightedSelection({
-        '1': 1,
-        '0': 2
-    }), ran1To1 = new WeightedSelection({
-        '1': 1,
-        '0': 1
-    }), ran2To1 = new WeightedSelection({
-        '1': 2,
-        '0': 1
-    });
-
-    let name = '';
-
-    if (!!parseInt(ran2To1.random())) {
-        name += names.adjective[randomInt(names.adjective.length - 1)] + ' ';
-    }
-
-    if (!!parseInt(ran1To2.random())) {
-        name += names.attribute[randomInt(names.attribute.length - 1)] + ' ';
-    }
-
-    name += names.object[randomInt(names.object.length - 1)] + ' ';
-
-    if (!!parseInt(ran1To2.random())) {
-        name += names.origin[randomInt(names.origin.length - 1)] + ' ';
-    }
-
-    return name.trim()
-
-};
-
-// creates a new iten
-export const newItem = (itemName, type) => {
+// creates a new item
+const newItem = (itemName, itemType) => {
 
     // get template for item type
-    let state = getFirstByType(copyObject(config).templates, type);
+    let state = getFirstByType(copyObject(config).templates, itemType);
 
     state.name = itemName;
     state.element = {
         name: name(state),
+        type: type(state),
         rank: rank(state),
         slots: slots(state),
         health: health(state),

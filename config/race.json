@@ -2,20 +2,20 @@
   "templates": [
     {
       "type": "cat",
-      "skills": {
-        "attack": 1,
-        "defense": 2,
-        "skill": 3,
-        "speed": 3
+      "properties": {
+        "attack": 5,
+        "defense": 10,
+        "dexterity": 8,
+        "speed": 8
       }
     },
     {
       "type": "dog",
-      "skills": {
-        "attack": 3,
-        "defense": 2,
-        "skill": 1,
-        "speed": 2
+      "properties": {
+        "attack": 12,
+        "defense": 6,
+        "dexterity": 4,
+        "speed": 6
       }
     }
   ]

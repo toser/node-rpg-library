@@ -1,5 +1,5 @@
 {
-  "adjective": [
+  "pre1": [
     "slimy",
     "old",
     "magical",
@@ -7,7 +7,7 @@
     "violent",
     "dripping"
   ],
-  "attribute": [
+  "pre2": [
     "red",
     "blue",
     "yellow",
@@ -15,7 +15,7 @@
     "pink",
     "purple"
   ],
-  "object": [
+  "main": [
     "potion",
     "apple",
     "drink",
@@ -23,7 +23,7 @@
     "cheese",
     "bread"
   ],
-  "origin": [
+  "post": [
     "of the sky",
     "from hell",
     "of doom",

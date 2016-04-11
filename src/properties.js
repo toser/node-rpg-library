@@ -38,3 +38,45 @@ export const boolean = (property, parent, state) => ({
         return state.element;
     }
 });
+
+/**
+ * get protected field
+ */
+export const fixed = (property, parent, state) => ({
+    get: () => parent[property]
+});
+
+
+/**
+ * remove element from array by name
+ *
+ * @param state
+ * @param arr
+ * @param callback
+ * @returns {function(elementName)}
+ */
+export const removeFromList = (state, arr, callback) => {
+
+    return (elementName) => {
+        let index = false,
+            element = elementName;
+
+        // search for element (by name)
+        arr.forEach(
+            (stateElement, i) => {
+
+                if (stateElement.name.get() === elementName) {
+                    index = i;
+                    element = stateElement;
+                }
+            }
+        );
+
+        // remove item from array
+        if (index !== false) {
+            arr.splice(index, 1);
+        }
+
+        return callback(!!index, element);
+    }
+};

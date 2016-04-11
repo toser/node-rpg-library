@@ -1,5 +1,5 @@
 {
-  "adjective": [
+  "pre1": [
     "mighty",
     "rusty",
     "broken",
@@ -8,7 +8,7 @@
     "violent",
     "two-handed"
   ],
-  "attribute": [
+  "pre2": [
     "shiny",
     "big",
     "small",
@@ -22,9 +22,11 @@
     "leather",
     "iron",
     "steel",
-    "wooden"
+    "wooden",
+    "monster",
+    "golden"
   ],
-  "object": [
+  "main": [
     "sword",
     "axe",
     "dagger",
@@ -35,9 +37,10 @@
     "cudgel",
     "hammer",
     "knife",
-    "staff"
+    "staff",
+    "dildo"
   ],
-  "origin": [
+  "post": [
     "of the sky",
     "from hell",
     "of death",

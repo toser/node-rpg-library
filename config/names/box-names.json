@@ -1,0 +1,31 @@
+{
+  "pre1": [
+    "small",
+    "big",
+    "tiny",
+    "strange"
+  ],
+  "pre2": [
+    "hidden",
+    "closed",
+    "covered",
+    "dirty",
+    "broken"
+  ],
+  "main": [
+    "shelf",
+    "box",
+    "crate",
+    "chest",
+    "bag",
+    "sack",
+    "closet",
+    "cabinet",
+    "trapdoor",
+    "closet",
+    "drawer"
+  ],
+  "post": [
+    ""
+  ]
+}

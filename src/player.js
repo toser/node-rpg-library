@@ -6,6 +6,7 @@ import * as race from './race';
 const config = getConfig('../config/player.json', __dirname);
 
 const name = (state) => Object.assign({}, properties.mixed('name', state, state)),
+    type = (state) => Object.assign({}, properties.fixed('type', state, state)),
     health = (state) => Object.assign({}, properties.numerical('health', state.properties, state)),
     rank = (state) => Object.assign({}, properties.numerical('rank', state.properties, state)),
     attack = (state) => Object.assign({}, properties.numerical('attack', state.properties, state)),
@@ -189,6 +190,7 @@ const items = (state) => ({
      * @param itemName
      * @returns {boolean}
      */
+    // ToDo: implement properties.removeFromList here -> see box.items.remove()
     remove: (itemName) => {
 
         let index = false,
@@ -237,25 +239,19 @@ const items = (state) => ({
     }
 });
 
-/*const name = (state) => ({
- get: () => state.name,
- set: (name) => {
- if (name) {
- state.name = name;
- }
- return state.element;
- }
- });*/
-
 
 export let newPlayer = (playerName, playerRace) => {
 
     let state = copyObject(config);
+    const raceState = race.getRace(playerRace);
 
     state.name = playerName;
-    state.race = Object.assign({}, race.getRace(playerRace));
+    state.type = raceState.type;
+    state.properties = Object.assign(state.properties, raceState.properties);
+
     state.element = {
         name: name(state),
+        type: type(state),
         health: health(state),
         rank: rank(state),
         attack: attack(state),
