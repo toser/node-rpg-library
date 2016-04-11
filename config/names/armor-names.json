@@ -6,10 +6,13 @@
     "magical",
     "horrible",
     "violent",
-    "funny"
+    "funny",
+    "secret"
   ],
   "pre2": [
     "shiny",
+    "black",
+    "white",
     "red",
     "blue",
     "yellow",
@@ -22,7 +25,9 @@
     "wooden",
     "golden",
     "cotton",
-    "golden"
+    "golden",
+    "silver",
+    "copper"
   ],
   "main": [
     "cap",

@@ -10,7 +10,10 @@
     "closed",
     "covered",
     "dirty",
-    "broken"
+    "broken",
+    "golden",
+    "silver",
+    "copper"
   ],
   "main": [
     "shelf",

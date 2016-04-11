@@ -6,13 +6,16 @@
     "magical",
     "horrible",
     "violent",
-    "two-handed"
+    "two-handed",
+    "secret"
   ],
   "pre2": [
     "shiny",
     "big",
     "small",
     "tiny",
+    "black",
+    "white",
     "red",
     "blue",
     "yellow",
@@ -24,7 +27,9 @@
     "steel",
     "wooden",
     "monster",
-    "golden"
+    "golden",
+    "silver",
+    "copper"
   ],
   "main": [
     "sword",
