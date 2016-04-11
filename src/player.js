@@ -2,11 +2,12 @@ import {EventEmitter} from 'events';
 import {getConfig, copyObject, getFirstByName} from 'helptos';
 import * as properties from './properties';
 import * as race from './race';
+import * as item from './item';
 
 const config = getConfig('../config/player.json', __dirname);
 
-const name = (state) => Object.assign({}, properties.mixed('name', state, state)),
-    type = (state) => Object.assign({}, properties.fixed('type', state, state)),
+const name = (state) => Object.assign({}, properties.mixed('name', state)),
+    type = (state) => Object.assign({}, properties.fixed('type', state)),
     health = (state) => Object.assign({}, properties.numerical('health', state.properties, state)),
     rank = (state) => Object.assign({}, properties.numerical('rank', state.properties, state)),
     attack = (state) => Object.assign({}, properties.numerical('attack', state.properties, state)),
@@ -19,226 +20,202 @@ const name = (state) => Object.assign({}, properties.mixed('name', state, state)
  *
  * @param state
  */
-const slots = (state) => ({
+const slots = (state) => Object.assign({
 
-    /**
-     * get total number of slots
-     * @returns {int}
-     */
-    total: () => state.inventory.slots.total,
+    filled: () => {
+
+        return state.element.items.list().reduce((filled, item) => {
+            return filled + item.slots.get();
+        }, 0);
+    },
 
     /**
      * get number of free slots
      * @returns {int}
      */
-    free: () => state.inventory.slots.free,
+    free: () => {
 
-    /**
-     * add slots
-     *
-     * @param val
-     * @returns {object} plyer object
-     */
-    up: (val = 1) => {
-        state.inventory.slots.total = state.inventory.slots.total + val;
-        state.inventory.slots.free = state.inventory.slots.free + val;
-
-        return state.element;
-    },
-
-    /**
-     * remove slots
-     *
-     * @param val
-     * @returns {object}
-     */
-    down: (val = 1) => {
-
-        if (state.inventory.slots.free - val < 0) {
-
-            state.element.event.emit('failure', {
-                action: 'slots down',
-                data: {
-                    player: state
-                }
-            });
-        }
-        else {
-
-            state.inventory.slots.total = state.inventory.slots.total - val;
-            state.inventory.slots.free = state.inventory.slots.free - val;
-        }
-
-        return state.element;
-    },
-
-    /**
-     * fill slots
-     *
-     * @param val
-     * @returns {object}
-     */
-    fill: (val = 1) => {
-
-        if (state.inventory.slots.free - val < 0) {
-
-            state.element.event.emit('failure', {
-                action: 'slots fill',
-                data: {
-                    player: state
-                }
-            });
-        }
-        else {
-
-            state.inventory.slots.free = state.inventory.slots.free - val;
-        }
-
-        return state.element;
-    },
-
-    /**
-     * empty slots
-     *
-     * @param val
-     * @returns {object}
-     */
-    empty: (val = 1) => {
-
-        if (state.inventory.slots.free + val > state.inventory.slots.total) {
-            state.inventory.slots.free = state.inventory.slots.total;
-        }
-        else {
-            state.inventory.slots.free = state.inventory.slots.free + val;
-        }
-
-        return state.element;
+        return state.element.slots.get() - state.element.slots.filled()
     }
-});
+
+}, properties.numerical('slots', state.properties, state));
 
 /**
  * anything you can do with inventory items
  *
  * @param state
  */
-const items = (state) => ({
+const items = (state) => Object.assign({
 
-    /**
-     * get list of all items
-     *
-     * @returns {array}
-     */
-    list: () => state.inventory.items,
-    add: (item) => {
+        /**
+         * add item
+         *
+         * @param item
+         * @returns {{name, type, health, rank, attack, defense, dexterity, speed, slots, items, event: *, describe: state.element.describe}|*}
+         */
+        add: (item) => {
 
+            // emit failure when item is not collectible
+            if (!item.collectible.get()) {
 
-        // emit failure when item is not collectible
-        if (!item.collectible.get()) {
-
-            state.element.event.emit('failure', {
-                action: 'add item',
-                type: 'collectable',
-                data: {
-                    player: state.element,
-                    item: item
-                }
-            });
-        }
-        // emit failure when player has not the needed rank for this item
-        else if (state.element.rank.get() < item.rank.get()) {
-
-            state.element.event.emit('failure', {
-                action: 'add item',
-                type: 'rank',
-                data: {
-                    player: state.element,
-                    item: item
-                }
-            });
-        }
-        // emit failure when player has not enough free slots for this item
-        else if (state.element.slots.fill(item.slots.get()) === false) {
-
-            state.element.event.emit('failure', {
-                action: 'add item',
-                type: 'slots',
-                data: {
-                    player: state.element,
-                    item: item
-                }
-            });
-        }
-        // add item and emit success when everything is fine
-        else {
-            state.inventory.items.push(item);
-
-            state.element.event.emit('success', {
-                action: 'add item',
-                data: {
-                    player: state.element,
-                    item: item
-                }
-            });
-        }
-
-        return state.element;
-    },
-
-    /**
-     * remove item by item name
-     *
-     * @param itemName
-     * @returns {boolean}
-     */
-    // ToDo: implement properties.removeFromList here -> see box.items.remove()
-    remove: (itemName) => {
-
-        let index = false,
-            item;
-
-        // search for item (by name) in players item list
-        state.inventory.items.forEach(
-            (playerItem, i) => {
-                if (playerItem.name.get() === itemName) {
-                    index = i;
-                    item = playerItem;
-                }
+                state.element.event.emit('failure', {
+                    action: 'add item',
+                    type: 'collectable',
+                    data: {
+                        player: state.element,
+                        item: item
+                    }
+                });
             }
-        );
+            // emit failure when player has not the needed rank for this item
+            else if (state.element.rank.get() < item.rank.get()) {
 
-        // emit failure when item is not in the players inventory
-        if (index === false) {
+                state.element.event.emit('failure', {
+                    action: 'add item',
+                    type: 'rank',
+                    data: {
+                        player: state.element,
+                        item: item
+                    }
+                });
+            }
+            // emit failure when player has not enough free slots for this item
+            else if (state.element.slots.free() < item.slots.get()) {
 
-            state.element.event.emit('failure', {
-                action: 'remove item',
-                data: {
-                    player: state.element,
-                    item: itemName
+                state.element.event.emit('failure', {
+                    action: 'add item',
+                    type: 'slots',
+                    data: {
+                        player: state.element,
+                        item: item
+                    }
+                });
+            }
+            // add item and emit success when everything is fine
+            else {
+                state.items.push(item);
+
+                state.element.event.emit('success', {
+                    action: 'add item',
+                    data: {
+                        player: state.element,
+                        item: item
+                    }
+                });
+            }
+
+            return state.element;
+        },
+
+        /**
+         * remove item by item name
+         *
+         * @param itemName
+         * @returns {boolean}
+         */
+        remove: properties.removeFromList(state, state.items,
+
+            (success, item) => {
+
+                if (success) {
+                    state.element.event.emit('success', {
+                        action: 'remove item',
+                        data: {
+                            player: state.element,
+                            item: item
+                        }
+                    });
                 }
-            });
+                else {
 
-        }
-        // remove item from players inventory
-        // empty the inventory slots
-        // emit success
-        else {
-
-            state.inventory.items.splice(index, 1);
-            state.element.slots.empty(item.slots.get());
-
-            state.element.event.emit('success', {
-                action: 'remove item',
-                data: {
-                    player: state.element,
-                    item: item
+                    state.element.event.emit('failure', {
+                        action: 'remove item',
+                        data: {
+                            player: state.element,
+                            item: item
+                        }
+                    });
                 }
-            });
-        }
 
-        return state.element;
+                return state.element;
+            })
+
+    },
+    // get default list functionality
+    properties.list(
+        'items',
+        state,
+        state,
+        [
+            item.types.WEAPON,
+            item.types.ARMOR,
+            item.types.CONSUMABLE
+        ]
+    )
+);
+
+const summary = state => ({
+
+
+    get: () => {
+
+        const player = state.element;
+
+        return {
+            name: player.name.get(),
+            type: player.type.get(),
+            rank: player.rank.get(),
+            health: player.health.get(),
+            attack: player.attack.get(),
+            defense: player.defense.get(),
+            dexterity: player.dexterity.get(),
+            speed: player.speed.get()
+        };
+    },
+    short: () => {
+
+        const player = state.element;
+
+        return {
+            name: player.name.get(),
+            type: player.type.get(),
+            rank: player.rank.get()
+        };
+    },
+    long: () => {
+
+        const player = state.element;
+
+        return {
+            name: player.name.get(),
+            type: player.type.get(),
+            rank: player.rank.get(),
+            health: player.health.get(),
+            attack: player.attack.get(),
+            defense: player.defense.get(),
+            dexterity: player.dexterity.get(),
+            speed: player.speed.get(),
+            weapon: player.items.listWeapon().map(item => item.summary.short()),
+            armor: player.items.listArmor().map(item => item.summary.short()),
+            consumable: player.items.listConsumable().map(item => item.summary.short())
+        };
+    },
+    items: {
+        get: () => {
+
+            const player = state.element;
+
+            return player.items.list().map(item => item.summary.get());
+        },
+        short: () => {
+
+            const player = state.element;
+
+            return player.items.list().map(item => item.summary.short());
+        }
     }
-});
 
+});
 
 export let newPlayer = (playerName, playerRace) => {
 
@@ -260,11 +237,8 @@ export let newPlayer = (playerName, playerRace) => {
         speed: speed(state),
         slots: slots(state),
         items: items(state),
-        event: new EventEmitter(),
-        describe: function() {
-            let e = state.element;
-            return `${e.name.get()}(${e.type.get()}) LVL:${e.rank.get()} ${e.rank.get()}HP --> ATT:${e.attack.get()} DEF:${e.defense.get()} DEX:${e.dexterity.get()} SP:${e.speed.get()}`;
-        }
+        summary: summary(state),
+        event: new EventEmitter()
     };
 
     return state.element;

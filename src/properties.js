@@ -1,5 +1,15 @@
+import {capitalize} from 'helptos';
+
+// -------------------------
+// property function collections
+// -------------------------
+
 /**
  * basic getter and setter for numerical properties
+ *
+ * @param property
+ * @param parent
+ * @param state
  */
 export const numerical = (property, parent, state) => ({
     get: () => parent[property],
@@ -15,6 +25,10 @@ export const numerical = (property, parent, state) => ({
 
 /**
  * get and set for mixed values
+ *
+ * @param property
+ * @param parent
+ * @param state
  */
 export const mixed = (property, parent, state) => ({
     get: () => parent[property],
@@ -28,6 +42,10 @@ export const mixed = (property, parent, state) => ({
 
 /**
  * get and set for boolean values
+ *
+ * @param property
+ * @param parent
+ * @param state
  */
 export const boolean = (property, parent, state) => ({
     get: () => parent[property],
@@ -41,11 +59,49 @@ export const boolean = (property, parent, state) => ({
 
 /**
  * get protected field
+ *
+ * @param property
+ * @param parent
+ * @param state
  */
-export const fixed = (property, parent, state) => ({
+export const fixed = (property, parent, state = parent) => ({
     get: () => parent[property]
 });
 
+
+/**
+ * list default functions
+ *
+ * you can add default filters as own functions by passing an array of type filters
+ * e.g.:
+ * typeFilters = ['weapon']
+ * will create a function listWeapon()
+ * that will return a a filtered list of elements with type==='weapon'
+ *
+ *
+ * @param property
+ * @param parent
+ * @param state
+ * @param typeFilters
+ * @returns {{list: (function())}}
+ */
+export const list = (property, parent, state = parent, typeFilters = []) => {
+
+    let obj = {
+        list: getList(parent[property])
+    };
+
+    typeFilters.forEach(filter => {
+        obj[`list${capitalize(filter)}`] = getList(parent[property], filter);
+    });
+
+    return obj;
+};
+
+
+// -------------------------
+// single property functions
+// -------------------------
 
 /**
  * remove element from array by name
@@ -78,5 +134,25 @@ export const removeFromList = (state, arr, callback) => {
         }
 
         return callback(!!index, element);
+    }
+};
+
+/**
+ * get a list of elements (array)
+ * set type to filter the list by type property
+ *
+ * @param arr
+ * @param type
+ * @returns {function()}
+ */
+export const getList = (arr, type) => {
+
+    return () => {
+        if (type) {
+            return arr.filter(item => item.type.get() === type);
+        }
+        else {
+            return arr;
+        }
     }
 };

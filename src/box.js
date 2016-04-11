@@ -11,88 +11,53 @@ const boxNames = getConfig('../config/names/box-names.json', __dirname);
 const name = state => Object.assign({}, properties.mixed('name', state, state));
 const open = state => Object.assign({}, properties.boolean('open', state, state));
 
-const items = state => ({
+const items = state => Object.assign({
 
-    list: () => state.items,
-    add: (item) => {
+        add: (item) => {
 
-        state.items.push(item);
-
-        return state.element;
-    },
-    remove: properties.removeFromList(state, state.items,
-
-        (success, item) => {
-
-            if (success) {
-                state.element.event.emit('success', {
-                    action: 'remove item',
-                    data: {
-                        box: state.element,
-                        item: item
-                    }
-                });
-            }
-            else {
-
-                state.element.event.emit('failure', {
-                    action: 'remove item',
-                    data: {
-                        box: state.element,
-                        item: item
-                    }
-                });
-            }
+            state.items.push(item);
 
             return state.element;
-        })
+        },
+        remove: properties.removeFromList(state, state.items,
 
-    /*{
+            (success, item) => {
 
-     let index = false,
-     item;
+                if (success) {
+                    state.element.event.emit('success', {
+                        action: 'remove item',
+                        data: {
+                            box: state.element,
+                            item: item
+                        }
+                    });
+                }
+                else {
 
-     // search for item (by name) in box item list
-     state.items.forEach(
-     (boxItem, i) => {
-     if (boxItem.name.get() === itemName) {
-     index = i;
-     item = boxItem;
-     }
-     }
-     );
+                    state.element.event.emit('failure', {
+                        action: 'remove item',
+                        data: {
+                            box: state.element,
+                            item: item
+                        }
+                    });
+                }
 
-     // emit failure when item is not in the box
-     if (index === false) {
-
-     state.element.event.emit('failure', {
-     action: 'remove item',
-     data: {
-     player: state.element,
-     item: itemName
-     }
-     });
-
-     }
-     // remove item from box
-     // emit success
-     else {
-
-     state.items.splice(index, 1);
-
-     state.element.event.emit('success', {
-     action: 'remove item',
-     data: {
-     player: state.element,
-     item: item
-     }
-     });
-     }
-
-     return state.element;
-     }*/
-
-});
+                return state.element;
+            })
+    },
+    // get default list functionality
+    properties.list(
+        'items',
+        state,
+        state,
+        [
+            item.types.WEAPON,
+            item.types.ARMOR,
+            item.types.CONSUMABLE
+        ]
+    )
+);
 
 const newBox = (boxName) => {
 

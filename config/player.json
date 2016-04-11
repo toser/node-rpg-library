@@ -6,13 +6,8 @@
     "attack": 0,
     "defense": 0,
     "dexterity": 0,
-    "speed": 0
+    "speed": 0,
+    "slots": 30
   },
-  "inventory": {
-    "slots": {
-      "total": 30,
-      "free": 30
-    },
-    "items": []
-  }
+  "items": []
 }

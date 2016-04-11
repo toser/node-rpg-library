@@ -7,7 +7,7 @@ const name = state => Object.assign({}, properties.mixed('name', state, state));
 
 const members = state => ({
 
-    list: () => state.players,
+    list: () => state.members,
     add: (member) => {
 
         state.members.push(member);
@@ -16,22 +16,42 @@ const members = state => ({
     },
 
     // ToDo: implement properties.removeFromList here -> see box.items.remove()
-    remove: () => {
 
+    remove: properties.removeFromList(state, state.members,
 
-        // ToDo: remove team
+        (success, member) => {
 
-        return state.element;
-    }
+            if (success) {
+                state.element.event.emit('success', {
+                    action: 'remove member',
+                    data: {
+                        team: state.element,
+                        member: member
+                    }
+                });
+            }
+            else {
+
+                state.element.event.emit('failure', {
+                    action: 'remove member',
+                    data: {
+                        team: state.element,
+                        member: member
+                    }
+                });
+            }
+
+            return state.element;
+        })
 
 });
 
 
-export const newGroup = (name) => {
+export const newGroup = (groupName) => {
 
     let state = copyObject(config);
 
-    state.name = name;
+    state.name = groupName;
 
     state.element = {
         name: name(state),

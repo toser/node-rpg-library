@@ -22,6 +22,66 @@ const name = (state) => Object.assign({}, properties.mixed('name', state, state)
     speed = (state) => Object.assign({}, properties.numerical('speed', state.properties, state)),
     time = (state) => Object.assign({}, properties.numerical('time', state.properties, state));
 
+const summary = state => ({
+
+
+    get: () => {
+
+        const item = state.element;
+
+        return {
+            name: item.name.get(),
+            type: item.type.get(),
+            rank: item.rank.get(),
+            health: item.health.get(),
+            attack: item.attack.get(),
+            defense: item.defense.get(),
+            dexterity: item.dexterity.get(),
+            speed: item.speed.get(),
+            time: item.time.get()
+        };
+    },
+    short: () => {
+
+        const item = state.element;
+
+        return {
+            name: item.name.get(),
+            type: item.type.get(),
+            rank: item.rank.get()
+        };
+    }
+
+    /*,
+     short: () => {
+
+     const player = state.element;
+
+     return {
+     name: player.name.get(),
+     rank: player.rank.get()
+     };
+     },
+     long: () => {
+     const player = state.element;
+
+     return {
+     name: player.name.get(),
+     rank: player.rank.get(),
+     health: player.health.get(),
+     attack: player.attack.get(),
+     defense: player.defense.get(),
+     dexterity: player.dexterity.get(),
+     speed: player.speed.get(),
+     weapon: player.items.listWeapon().map(item => item.name.get()),
+     armor: player.items.listArmor().map(item => item.name.get()),
+     consumable: player.items.listConsumable().map(item => item.name.get())
+     };
+     },
+     items: {}*/
+
+});
+
 // creates a new item
 const newItem = (itemName, itemType) => {
 
@@ -41,6 +101,7 @@ const newItem = (itemName, itemType) => {
         speed: speed(state),
         time: time(state),
         collectible: collectible(state),
+        summary: summary(state),
         event: new EventEmitter()
     };
 

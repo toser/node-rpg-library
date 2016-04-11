@@ -21,7 +21,7 @@
   "author": "Toni Feistauer",
   "license": "MIT",
   "dependencies": {
-    "helptos": "^1.0.9",
+    "helptos": "^1.0.10",
     "nedb": "^1.8.0",
     "random-tools": "0.0.5"
   },

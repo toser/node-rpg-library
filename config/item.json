@@ -6,11 +6,13 @@
       "collectible": true,
       "properties": {
         "rank": 0,
+        "health": 0,
         "slots": 0,
         "attack": 0,
         "defense": 0,
         "speed": 0,
-        "dexterity": 0
+        "dexterity": 0,
+        "time": 0
       }
     },
     {
@@ -19,11 +21,13 @@
       "collectible": true,
       "properties": {
         "rank": 0,
+        "health": 0,
         "slots": 0,
         "attack": 0,
         "defense": 0,
         "speed": 0,
-        "dexterity": 0
+        "dexterity": 0,
+        "time": 0
       }
     },
     {
