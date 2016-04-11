@@ -28,11 +28,11 @@ toni.event.on('success', (e) => {
 
 let myBox = box.createBox();
 
-console.log(`------- ${myBox.name.get()} Summary:`);
-console.log('short', myBox.summary.short());
-console.log('get', myBox.summary.get());
-console.log('items get', myBox.summary.items.get());
-console.log('items short', myBox.summary.items.short());
+/*console.log(`------- ${myBox.name.get()} Summary:`);
+ console.log('short', myBox.summary.short());
+ console.log('get', myBox.summary.get());
+ console.log('items get', myBox.summary.items.get());
+ console.log('items short', myBox.summary.items.short());*/
 
 
 myBox.items.list().map(item => item).forEach((item) => {
@@ -41,9 +41,17 @@ myBox.items.list().map(item => item).forEach((item) => {
 });
 
 
-console.log(`------- ${toni.name.get()} Summary:`);
-console.log('short', toni.summary.short());
-console.log('get', toni.summary.get());
-console.log('long', toni.summary.long());
-console.log('items get', toni.summary.items.get());
-console.log('items short', toni.summary.items.short());
+/*console.log(`------- ${toni.name.get()} Summary:`);
+ console.log('short', toni.summary.short());
+ console.log('get', toni.summary.get());
+ console.log('long', toni.summary.long());
+ console.log('items get', toni.summary.items.get());
+ console.log('items short', toni.summary.items.short());*/
+
+
+console.log(`------- ${myGroup.name.get()} Summary:`);
+console.log('short', JSON.stringify(myGroup.summary.short(), null, 2));
+console.log('get', JSON.stringify(myGroup.summary.get(), null, 2));
+console.log('members get', JSON.stringify(myGroup.summary.members.get(), null, 2));
+console.log('members short', JSON.stringify(myGroup.summary.members.short(), null, 2));
+console.log('members long', JSON.stringify(myGroup.summary.members.long(), null, 2));
