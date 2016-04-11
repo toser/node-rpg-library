@@ -260,7 +260,11 @@ export let newPlayer = (playerName, playerRace) => {
         speed: speed(state),
         slots: slots(state),
         items: items(state),
-        event: new EventEmitter()
+        event: new EventEmitter(),
+        describe: function() {
+            let e = state.element;
+            return `${e.name.get()}(${e.type.get()}) LVL:${e.rank.get()} ${e.rank.get()}HP --> ATT:${e.attack.get()} DEF:${e.defense.get()} DEX:${e.dexterity.get()} SP:${e.speed.get()}`;
+        }
     };
 
     return state.element;

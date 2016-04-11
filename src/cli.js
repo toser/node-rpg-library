@@ -19,7 +19,7 @@ stdin.addListener('data', (data) => {
         if (responses.indexOf('bye') === -1)
             process.stdout.write('> ');
     } catch(error) {
-        console.log('error: ' + error);
+        console.log('error:', error.stack);
         process.stdout.write('> ');
     }
 });

@@ -44,11 +44,11 @@ const teams = state => ({
 
 });
 
-export const newPlace = (name) => {
+export const newPlace = (name_in) => {
 
     let state = copyObject(config);
 
-    state.name = name;
+    state.name = name_in;
 
     state.element = {
         name: name(state),
