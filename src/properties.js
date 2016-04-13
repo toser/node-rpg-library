@@ -11,7 +11,7 @@ import {capitalize} from 'helptos';
  * @param parent
  * @param state
  */
-export const numerical = (property, parent, state) => ({
+export const numerical = (property, parent, state = parent) => ({
     get: () => parent[property],
     up: (val = 1) => {
         parent[property] = parent[property] + val;
@@ -30,7 +30,7 @@ export const numerical = (property, parent, state) => ({
  * @param parent
  * @param state
  */
-export const mixed = (property, parent, state) => ({
+export const mixed = (property, parent, state = parent) => ({
     get: () => parent[property],
     set: (val) => {
         if (val) {
@@ -47,7 +47,7 @@ export const mixed = (property, parent, state) => ({
  * @param parent
  * @param state
  */
-export const boolean = (property, parent, state) => ({
+export const boolean = (property, parent, state = parent) => ({
     get: () => parent[property],
     set: (val) => {
         if (val) {

@@ -16,6 +16,14 @@ const items = state => Object.assign({
         add: (item) => {
 
             state.items.push(item);
+            
+            state.element.event.emit('success', {
+                        action: 'add item',
+                        data: {
+                            box: state.element,
+                            item: item
+                        }
+                    });
 
             return state.element;
         },
@@ -81,18 +89,8 @@ const summary = state => ({
         };
     },
     items: {
-        get: () => {
-
-            const box = state.element;
-
-            return box.items.list().map(item => item.summary.get());
-        },
-        short: () => {
-
-            const box = state.element;
-
-            return box.items.list().map(item => item.summary.short());
-        }
+        get: () => state.element.items.list().map(item => item.summary.get()),
+        short: () => state.element.items.list().map(item => item.summary.short())
     }
 
 });
