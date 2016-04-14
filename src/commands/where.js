@@ -1,7 +1,10 @@
 
-export const cmdRegExp = /where|where am i|where are we|w/;
-export const cmdRegVars = 0;
+export const cmdRegExp = /^(where|where am i|where are we|w)$/;
 
 export const run = (player, command, world) => {
-    return [ `${player} seems to be a little bit confused about the meaning of his/her/its life. *TODO*` ];
+    if (world.getPlayer(player)) {
+        return [ world.places[world.currentPlace].summary.get() ]; // this should never fail
+    } else {
+        return [ `${player} is not a registered player` ];
+    }
 };

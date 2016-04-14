@@ -88,6 +88,7 @@ export const fixed = (property, parent, state = parent) => ({
 export const list = (property, parent, state = parent, typeFilters = []) => {
 
     let obj = {
+        getElement: (key, value) => { return getElement(parent[property], key, value); },
         list: getList(parent[property])
     };
 
@@ -143,7 +144,7 @@ export const removeFromList = (state, arr, callback) => {
  *
  * @param arr
  * @param type
- * @returns {function()}
+ * @returns {function}
  */
 export const getList = (arr, type) => {
 
@@ -155,4 +156,20 @@ export const getList = (arr, type) => {
             return arr;
         }
     }
+};
+
+/**
+ * get an element from an array of mixeds
+ * specified by a key & value
+ *
+ * @param arr
+ * @param key
+ * @param value
+ * @returns {array}
+ */
+export const getElement = (arr, key, value) => {
+
+    return arr.reduce((prev, curr) => {
+        return prev || (((key in curr) && ('get' in curr[key]) && (curr[key].get() === value)) ? curr : null)
+    }, null);
 };
