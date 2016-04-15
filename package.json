@@ -2,7 +2,7 @@
   "name": "node-rpg",
   "version": "0.0.1",
   "description": "A nodejs framework for text based role-playing games",
-  "main": "lib/index.js",
+  "main": "lib/rpg.js",
   "bin": {
     "rpg-cli": "bin/rpg-cli"
   },
