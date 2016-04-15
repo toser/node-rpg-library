@@ -6,6 +6,7 @@
     "horrible",
     "violent",
     "dripping",
+    "trippy",
     "smelly",
     "secret"
   ],
@@ -23,7 +24,9 @@
     "drink",
     "meal",
     "cheese",
-    "bread"
+    "bread",
+    "plant",
+    "flower"
   ],
   "post": [
     "of the sky",
@@ -32,6 +35,7 @@
     "of light",
     "of your mother",
     "of the elves",
+    "of cannabis",
     "from africa"
   ]
 }
