@@ -148,7 +148,6 @@ export const removeFromList = (state, arr, callback) => {
 export const getList = (arr, type) => {
 
     return (key, value) => { // or filter by key:value pair
-        //console.log('list', key, value, arr);
         if (type) {
             return arr.filter(item => item.type.get() === type);
         } else if (key && value) {
