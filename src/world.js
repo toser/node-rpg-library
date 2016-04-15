@@ -11,7 +11,7 @@ export let newWorld = (databaseFile) => {
     state.database = new Database({ filename: databaseFile || 'rpg.db', autoload: true });
     state.world = {
         playerGroup: null,
-        getPlayer: function(n) { return (state.world.playerGroup ? state.world.playerGroup.members.getElement('name', n) : null); },
+        getPlayers: function(n) { return (state.world.playerGroup ? state.world.playerGroup.members.list('name', n) : []); },
         places: {
             "0,0": Place.newPlace('0,0')
         },

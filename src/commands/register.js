@@ -7,7 +7,7 @@ export const cmdRegExp = /^(register|r) *(\S+){0,1}$/; // " *" vs ( \S+)   :-(
 export const run = (player, command, world) => {
     if (!world.playerGroup) {
         return [ `no group for players started.` ];
-    } else if (world.getPlayer(player)) {
+    } else if (world.getPlayers(player).length > 0) {
         return [ `character "${player}" already exists` ];
     } else {
         let matches = cmdRegExp.exec(command),
