@@ -8,16 +8,24 @@
  * @param name
  * @returns {boolean}
  */
-export const itemTransfer = (from, to, name) => {
+export const itemTransfer = (from, to, id) => {
     
-    const item = from.items.list().filter(item => item.name.get() === name)[0];
+    let item = from.items.list('id', id);
     
-    if(!item){
+    if(!item.length){
         return false;
     }
     
+    item = item[0];
+    
     to.items.add(item);
-    from.items.remove(name);
+    
+    if(!to.items.list('id', id).length) {
+        return false;
+    }
+    else {
+        from.items.remove(id);
+    }
     
     return true;
 };

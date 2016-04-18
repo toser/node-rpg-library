@@ -7,49 +7,7 @@ const config = getConfig('../config/place.json', __dirname);
 const name = state => Object.assign({}, properties.mixed('name', state, state));
 
 
-const boxes = state => Object.assign({
-
-        add: (box) => {
-
-            state.boxes.push(box);
-            
-            state.element.event.emit('success', {
-                        action: 'add box',
-                        data: {
-                            place: state.element,
-                            box: box
-                        }
-                    });
-
-            return state.element;
-        },
-        remove: properties.removeFromList(state, state.boxes,
-
-            (success, box) => {
-
-                if (success) {
-                    state.element.event.emit('success', {
-                        action: 'remove box',
-                        data: {
-                            place: state.element,
-                            box: box
-                        }
-                    });
-                }
-                else {
-
-                    state.element.event.emit('failure', {
-                        action: 'remove box',
-                        data: {
-                            place: state.element,
-                            box: box
-                        }
-                    });
-                }
-
-                return state.element;
-            })
-    },
+const boxes = state => Object.assign({},
     // get default list functionality
     properties.list(
         'boxes',
@@ -73,32 +31,7 @@ const groups = state => Object.assign({
 
             return state.element;
         },
-        remove: properties.removeFromList(state, state.groups,
-
-            (success, group) => {
-
-                if (success) {
-                    state.element.event.emit('success', {
-                        action: 'remove group',
-                        data: {
-                            place: state.element,
-                            group: group
-                        }
-                    });
-                }
-                else {
-
-                    state.element.event.emit('failure', {
-                        action: 'remove group',
-                        data: {
-                            place: state.element,
-                            group: group
-                        }
-                    });
-                }
-
-                return state.element;
-            })
+        remove: properties.removeFromList('groups', state)
     },
     // get default list functionality
     properties.list(
@@ -130,7 +63,7 @@ const summary = state => ({
     
 });
 
-export const newPlace = (name_in) => {
+const newPlace = (name_in) => {
 
     let state = copyObject(config);
 
@@ -146,3 +79,8 @@ export const newPlace = (name_in) => {
 
     return state.element;
 };
+
+export const createPlace = (placeName) => {
+    
+    return newPlace(placeName);
+}

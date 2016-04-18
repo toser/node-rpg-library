@@ -45,102 +45,7 @@ const slots = (state) => Object.assign({
  *
  * @param state
  */
-const items = (state) => Object.assign({
-
-        /**
-         * add item
-         *
-         * @param item
-         * @returns {{name, type, health, rank, attack, defense, dexterity, speed, slots, items, event: *, describe: state.element.describe}|*}
-         */
-        add: (item) => {
-
-            // emit failure when item is not collectible
-            if (!item.collectible.get()) {
-
-                state.element.event.emit('failure', {
-                    action: 'add item',
-                    type: 'collectable',
-                    data: {
-                        player: state.element,
-                        item: item
-                    }
-                });
-            }
-            // emit failure when player has not the needed rank for this item
-            else if (state.element.rank.get() < item.rank.get()) {
-
-                state.element.event.emit('failure', {
-                    action: 'add item',
-                    type: 'rank',
-                    data: {
-                        player: state.element,
-                        item: item
-                    }
-                });
-            }
-            // emit failure when player has not enough free slots for this item
-            else if (state.element.slots.free() < item.slots.get()) {
-
-                state.element.event.emit('failure', {
-                    action: 'add item',
-                    type: 'slots',
-                    data: {
-                        player: state.element,
-                        item: item
-                    }
-                });
-            }
-            // add item and emit success when everything is fine
-            else {
-                state.items.push(item);
-
-                state.element.event.emit('success', {
-                    action: 'add item',
-                    data: {
-                        player: state.element,
-                        item: item
-                    }
-                });
-            }
-
-            return state.element;
-        },
-
-        /**
-         * remove item by item name
-         *
-         * @param itemName
-         * @returns {boolean}
-         */
-        remove: properties.removeFromList(state, state.items,
-
-            (success, item) => {
-
-                if (success) {
-                    state.element.event.emit('success', {
-                        action: 'remove item',
-                        data: {
-                            player: state.element,
-                            item: item
-                        }
-                    });
-                }
-                else {
-
-                    state.element.event.emit('failure', {
-                        action: 'remove item',
-                        data: {
-                            player: state.element,
-                            item: item
-                        }
-                    });
-                }
-
-                return state.element;
-            })
-
-    },
+const items = (state) => Object.assign({},
     // get default list functionality
     properties.list(
         'items',
@@ -151,7 +56,27 @@ const items = (state) => Object.assign({
             item.types.ARMOR,
             item.types.CONSUMABLE
         ]
-    )
+    ),
+    {
+
+        /**
+         * override add item default functionality
+         *
+         * @param item
+         * @returns {{name, type, health, rank, attack, defense, dexterity, speed, slots, items, event: *, describe: state.element.describe}|*}
+         */
+        add: (item) => {
+            
+            if(item.collectible.get() && 
+                state.element.rank.get() >= item.rank.get() &&
+                state.element.slots.free() >= item.slots.get()){
+                    
+                state.items.push(item);
+            }
+
+            return state.element;
+        }
+    }
 );
 
 const summary = state => ({
@@ -217,7 +142,7 @@ const summary = state => ({
 
 });
 
-export let newPlayer = (playerName, playerRace) => {
+const newPlayer = (playerName, playerRace) => {
 
     let state = copyObject(config);
     const raceState = race.getRace(playerRace);
@@ -242,4 +167,9 @@ export let newPlayer = (playerName, playerRace) => {
     };
 
     return state.element;
+};
+
+export const createPlayer = (playerName, playerRace) => {
+
+    return newPlayer(playerName, playerRace);
 };

@@ -88,7 +88,9 @@ export const fixed = (property, parent, state = parent) => ({
 export const list = (property, parent, state = parent, typeFilters = []) => {
 
     let obj = {
-        list: getList(parent[property])
+        list: getList(parent[property]),
+        add: addToList(parent[property], state),
+        remove: removeFromList(parent[property], state)
     };
 
     typeFilters.forEach(filter => {
@@ -104,6 +106,17 @@ export const list = (property, parent, state = parent, typeFilters = []) => {
 // -------------------------
 
 /**
+ * add element to array
+ */
+export const addToList = (arr, state) => {
+    
+    return (element) => {
+        arr.push(element);
+        return state.element;
+    };
+};
+
+/**
  * remove element from array by name
  *
  * @param state
@@ -111,29 +124,17 @@ export const list = (property, parent, state = parent, typeFilters = []) => {
  * @param callback
  * @returns {function(elementName)}
  */
-export const removeFromList = (state, arr, callback) => {
+export const removeFromList = (arr, state) => {
 
-    return (elementName) => {
-        let index = false,
-            element = elementName;
-
-        // search for element (by name)
-        arr.forEach(
-            (stateElement, i) => {
-
-                if (stateElement.name.get() === elementName) {
-                    index = i;
-                    element = stateElement;
-                }
-            }
-        );
-
-        // remove item from array
-        if (index !== false) {
+    return (id) => {
+        
+        let index = arr.map(i => i.id.get()).indexOf(id);
+            
+        if(index !== -1) {
             arr.splice(index, 1);
         }
 
-        return callback(!!index, element);
+        return state.element;
     }
 };
 
@@ -148,10 +149,9 @@ export const removeFromList = (state, arr, callback) => {
 export const getList = (arr, type) => {
 
     return (key, value) => { // or filter by key:value pair
-        //console.log('list', key, value, arr);
         if (type) {
             return arr.filter(item => item.type.get() === type);
-        } else if (key && value) {
+        } else if (key && (value || value === 0)) {
             return arr.filter(item => key in item ? item[key].get() === value : false);
         } else {
             return arr;

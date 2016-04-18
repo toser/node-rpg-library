@@ -3,51 +3,105 @@ import {getConfig, copyObject, getFirstByType} from 'helptos';
 import * as properties from './properties';
 
 const config = getConfig('../config/group.json', __dirname);
+const playerPropertyConfig = getConfig('../config/player.json', __dirname).properties;
 
-const name = state => Object.assign({}, properties.mixed('name', state, state));
 
-const members = state => Object.assign({
-
-        add: (member) => {
-
-            state.members.push(member);
-
-            return state.element;
-        },
-        remove: properties.removeFromList(state, state.members,
-
-            (success, member) => {
-
-                if (success) {
-                    state.element.event.emit('success', {
-                        action: 'remove member',
-                        data: {
-                            team: state.element,
-                            member: member
-                        }
-                    });
+const getPropertiesFromAllMembers = (members, baseProperties) => {
+    
+    return members.reduce((output, member) => {
+            
+            output = Object.keys(output).reduce((out, key) => {
+                
+                if(!(out[key] instanceof Array)){
+                    out[key] = [];
                 }
-                else {
+                
+                out[key].push(member[key].get());
+                return out;
+            }, output);
+            
+            return output;
+            
+        }, baseProperties);
+};
 
-                    state.element.event.emit('failure', {
-                        action: 'remove member',
-                        data: {
-                            team: state.element,
-                            member: member
-                        }
-                    });
-                }
+const name = state => Object.assign({}, properties.mixed('name', state));
 
-                return state.element;
-            })
-
-    },
+const members = state => Object.assign({},
     // get default list functionality
     properties.list(
         'members',
         state
     )
 );
+
+/**
+ * get infos from group by its member infos (eg. average from properties)
+ */
+const info = state => ({
+    
+    average: (property = false) => {
+        
+        const baseProperties = copyObject(playerPropertyConfig),
+            group = state.element,
+            memberCount = group.members.list().length;
+            
+        let average = getPropertiesFromAllMembers(group.members.list(), baseProperties);
+        
+        // get averages
+        average = Object.keys(average).reduce((output, key) => {
+            output[key] = Math.round(average[key].reduce((sum,val) => {return sum + val},0) / memberCount);
+            return output;
+        }, {});
+        
+        if(property){
+            return average[property];
+        }
+        else {
+            return average;
+        }
+    },
+    min: (property = false) => {
+        
+        const baseProperties = copyObject(playerPropertyConfig),
+            group = state.element;
+        
+        let min = getPropertiesFromAllMembers(group.members.list(), baseProperties);
+        
+        // get minimum
+        min = Object.keys(min).reduce((output, key) => {
+            output[key] = Math.min.apply(this, min[key]);
+            return output;
+        }, {});
+        
+        if(property){
+            return min[property];
+        }
+        else {
+            return min;
+        }
+    },
+    max: (property = false) => {
+        
+        const baseProperties = copyObject(playerPropertyConfig),
+            group = state.element;
+        
+        let max = getPropertiesFromAllMembers(group.members.list(), baseProperties);
+        
+        // get minimum
+        max = Object.keys(max).reduce((output, key) => {
+            output[key] = Math.max.apply(this, max[key]);
+            return output;
+        }, {});
+        
+        if(property){
+            return max[property];
+        }
+        else {
+            return max;
+        }
+    }
+});
 
 const summary = state => ({
 
@@ -70,29 +124,20 @@ const summary = state => ({
     },
     members: {
         get: () => {
-
-            const group = state.element;
-
-            return group.members.list().map(member => member.summary.get());
+            return state.element.members.list().map(member => member.summary.get());
         },
         short: () => {
-
-            const group = state.element;
-
-            return group.members.list().map(member => member.summary.short());
+            return state.element.members.list().map(member => member.summary.short());
         },
         long: () => {
-
-            const group = state.element;
-
-            return group.members.list().map(member => member.summary.long());
+            return state.element.members.list().map(member => member.summary.long());
         }
     }
 
 });
 
 
-export const newGroup = (groupName) => {
+const newGroup = (groupName) => {
 
     let state = copyObject(config);
 
@@ -102,8 +147,14 @@ export const newGroup = (groupName) => {
         name: name(state),
         members: members(state),
         summary: summary(state),
+        info: info(state),
         event: new EventEmitter()
     };
 
     return state.element;
+};
+
+export const createGroup = (groupName, creatureGroup) => {
+    
+    return newGroup(groupName);
 };

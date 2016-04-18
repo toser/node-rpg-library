@@ -5,43 +5,42 @@ import * as place from './place';
 import * as actions from './actions';
 
 
-let toni = player.newPlayer('Toni', 'cat'),
-    myGroup = group.newGroup('Fighter of Glory');
-
-myGroup.members.add(toni);
-
-toni.rank.up(3);
-
-toni.event.on('failure', (e) => {
-
-    switch (e.action) {
-    case 'add item':
-        console.log(`${e.data.player.name.get()}: can not ${e.action} ${e.data.item.name.get()}. Because of ${e.type}.`);
-        break;
-    case 'remove item':
-        console.log(`${e.data.player.name.get()}: can not ${e.action} ${e.data.item}. Not in the inventory.`);
-        break;
-    }
-});
-
-toni.event.on('success', (e) => {
-    console.log(`${e.data.player.name.get()}: ${e.action} ${e.data.item.name.get()}.`);
-});
-
+let toni = player.createPlayer('Toni', 'cat'),
+    tom = player.createPlayer('Tom', 'dog'),
+    basti = player.createPlayer('Bastl', 'cat'),
+    myGroup = group.createGroup('Fighter of Glory');
+    
 let myBox = box.createBox();
 
-let myPlace = place.newPlace('Home of the brave');
+let myPlace = place.createPlace('Home of the brave');
+
+toni.rank.up(3);
+tom.attack.up(15);
+
+myGroup.members.add(toni)
+        .members.add(tom)
+        .members.add(basti);
+            
+console.log(myGroup.info.average());
+console.log(myGroup.info.min());
+console.log(myGroup.info.max());
+
+console.log(myGroup.info.average('defense'));
+console.log(myGroup.info.min('rank'));
+console.log(myGroup.info.max('rank'));
+            
 
 myPlace.boxes.add(myBox);
 myPlace.groups.add(myGroup);
 
-console.log('box----: \n', JSON.stringify(myBox.summary.items.short(), null, 2));
+
+/*console.log('box----: \n', JSON.stringify(myBox.summary.items.short(), null, 2));
 console.log('toni----: \n', JSON.stringify(toni.summary.items.short(), null, 2));
 
-actions.itemTransfer(myBox, toni, myBox.items.list()[0].name.get());
+actions.itemTransfer(myBox, toni, myBox.items.list()[0].id.get());
 
 console.log('box----: \n', JSON.stringify(myBox.summary.items.short(), null, 2));
-console.log('toni----: \n', JSON.stringify(toni.summary.items.short(), null, 2));
+console.log('toni----: \n', JSON.stringify(toni.summary.items.short(), null, 2));*/
 
 
 /*console.log(JSON.stringify(myPlace.summary.short(), null, 2));

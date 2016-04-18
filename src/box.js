@@ -11,49 +11,7 @@ const boxNames = getConfig('../config/names/box-names.json', __dirname);
 const name = state => Object.assign({}, properties.mixed('name', state, state));
 const open = state => Object.assign({}, properties.boolean('open', state, state));
 
-const items = state => Object.assign({
-
-        add: (item) => {
-
-            state.items.push(item);
-            
-            state.element.event.emit('success', {
-                        action: 'add item',
-                        data: {
-                            box: state.element,
-                            item: item
-                        }
-                    });
-
-            return state.element;
-        },
-        remove: properties.removeFromList(state, state.items,
-
-            (success, item) => {
-
-                if (success) {
-                    state.element.event.emit('success', {
-                        action: 'remove item',
-                        data: {
-                            box: state.element,
-                            item: item
-                        }
-                    });
-                }
-                else {
-
-                    state.element.event.emit('failure', {
-                        action: 'remove item',
-                        data: {
-                            box: state.element,
-                            item: item
-                        }
-                    });
-                }
-
-                return state.element;
-            })
-    },
+const items = state => Object.assign({},
     // get default list functionality
     properties.list(
         'items',

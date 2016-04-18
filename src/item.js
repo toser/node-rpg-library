@@ -3,6 +3,7 @@ import {getConfig, copyObject, getFirstByType} from 'helptos';
 import {WeightedSelection, randomInt} from 'random-tools';
 import {createName} from './name';
 import * as properties from './properties';
+import * as uuid from './uuid';
 
 const config = getConfig('../config/item.json', __dirname);
 const weaponNames = getConfig('../config/names/weapon-names.json', __dirname);
@@ -10,9 +11,10 @@ const armorNames = getConfig('../config/names/armor-names.json', __dirname);
 const consumableNames = getConfig('../config/names/consumable-names.json', __dirname);
 
 // assign numerical getter and setter to properties
-const name = (state) => Object.assign({}, properties.mixed('name', state, state)),
-    type = (state) => Object.assign({}, properties.fixed('type', state, state)),
-    collectible = (state) => Object.assign({}, properties.boolean('name', state, state)),
+const name = (state) => Object.assign({}, properties.mixed('name', state)),
+    id = (state) => Object.assign({}, properties.fixed('id', state)),
+    type = (state) => Object.assign({}, properties.fixed('type', state)),
+    collectible = (state) => Object.assign({}, properties.boolean('name', state)),
     rank = (state) => Object.assign({}, properties.numerical('rank', state.properties, state)),
     slots = (state) => Object.assign({}, properties.numerical('slots', state.properties, state)),
     health = (state) => Object.assign({}, properties.numerical('health', state.properties, state)),
@@ -31,6 +33,23 @@ const summary = state => ({
 
         return {
             name: item.name.get(),
+            type: item.type.get(),
+            rank: item.rank.get(),
+            health: item.health.get(),
+            attack: item.attack.get(),
+            defense: item.defense.get(),
+            dexterity: item.dexterity.get(),
+            speed: item.speed.get(),
+            time: item.time.get()
+        };
+    },
+    long: () => {
+
+        const item = state.element;
+
+        return {
+            name: item.name.get(),
+            id: item.id.get(),
             type: item.type.get(),
             rank: item.rank.get(),
             health: item.health.get(),
@@ -60,8 +79,10 @@ const newItem = (itemName, itemType) => {
     let state = getFirstByType(copyObject(config).templates, itemType);
 
     state.name = itemName;
+    state.id = uuid.generate();
     state.element = {
         name: name(state),
+        id: id(state),
         type: type(state),
         rank: rank(state),
         slots: slots(state),
