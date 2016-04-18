@@ -2,7 +2,7 @@
 import * as Player from '../player';
 import * as Race from '../race';
 
-export const cmdRegExp = /^(register|r) *(\S+){0,1}$/; // " *" vs ( \S+)   :-(
+export const cmdRegExp = /^(register|reg|r) *(\S+){0,1}$/; // " *" vs ( \S+)   :-(
 
 export const run = (player, command, world) => {
     if (!world.playerGroup) {
