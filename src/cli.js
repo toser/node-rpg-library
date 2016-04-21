@@ -4,7 +4,7 @@ import * as RPG from './rpg';
 
 // initialized
 
-const rpg = RPG.newRPG(),
+const rpg = RPG.createRPG(),
     user = 'player';
 
 // hooking up the stdin for the user commands

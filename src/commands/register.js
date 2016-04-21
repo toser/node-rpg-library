@@ -14,7 +14,7 @@ export const run = (player, command, world) => {
             race = matches[2] ? matches[2].trim() : null;
         if (!race || Race.getRaces().indexOf(race) === -1) // no or wrong race chosen
             return [ `${player}, choose a race: ${Race.getRaces()}` ];
-        let character = Player.newPlayer(player, race);
+        let character = Player.createPlayer(player, race);
         world.playerGroup.members.add(character);
         return [ `character "${player}" created, may glory be with you! ${player} joined "${world.playerGroup.name.get()}".`, character.summary.short() ];
     }

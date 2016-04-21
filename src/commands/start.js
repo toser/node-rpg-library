@@ -11,6 +11,6 @@ export const run = (player, command, world) => {
         group = matches[2] ? matches[2].trim() : null;
     if (!group) // no group-name given
         return [ `name your group, ${player}!` ];
-    world.playerGroup = Group.newGroup(group);
+    world.playerGroup = Group.createGroup(group);
     return [ `${player} started the group "${group}"! Let's see what adventure may lie upon you...` ];
 };

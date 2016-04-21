@@ -7,16 +7,21 @@ import {getConfig, getFirstByType, copyObject} from 'helptos';
 import * as Parser from './parser';
 import * as World from './world';
 
-export let newRPG = (databaseFile) => {
+const newRPG = (databaseFile) => {
 
     let state = {};
 
-    state.world = World.newWorld(databaseFile);
+    state.world = World.createWorld(databaseFile);
     state.rpg = {
         parse : (player, command) => { return Parser.parse(player, command, state.world); }
     };
 
-    // TODO
-
     return state.rpg;
 };
+
+export const createRPG = (databaseFile) => {
+
+    let rpg = newRPG(databaseFile);
+
+    return rpg;
+}
