@@ -70,7 +70,7 @@ const newBox = (boxName) => {
     return state.element;
 };
 
-export const createBox = () => {
+export const createBox = (average) => {
 
     // ToDo: pass team to get averages
 

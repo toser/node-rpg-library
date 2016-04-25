@@ -10,17 +10,20 @@ let toni = player.createPlayer('Toni', 'cat'),
     basti = player.createPlayer('Bastl', 'cat'),
     myGroup = group.createGroup('Fighter of Glory');
     
-let myBox = box.createBox();
 
 let myPlace = place.createPlace('Home of the brave');
+
+console.log(myGroup.info.average());
 
 toni.rank.up(3);
 tom.attack.up(15);
 
-myGroup.members.add(toni)
-        .members.add(tom)
-        .members.add(basti);
-            
+myGroup.members.add(toni);
+myGroup.members.add(tom);
+myGroup.members.add(basti);
+
+let myBox = box.createBox(myGroup.info.average());
+
 console.log(myGroup.info.average());
 console.log(myGroup.info.min());
 console.log(myGroup.info.max());

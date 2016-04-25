@@ -12,6 +12,7 @@ const getPropertiesFromAllMembers = (members, baseProperties) => {
             
             output = Object.keys(output).reduce((out, key) => {
                 
+                // for the first member create array for each property
                 if(!(out[key] instanceof Array)){
                     out[key] = [];
                 }
@@ -42,64 +43,53 @@ const info = state => ({
     
     average: (property = false) => {
         
+        if(!state.element.members.list().length){
+            return new Error(`the group ${state.element.name.get()} has no members.`);
+        }
+        
         const baseProperties = copyObject(playerPropertyConfig),
-            group = state.element,
-            memberCount = group.members.list().length;
+            members = state.element.members.list(),
+            allMembersProperties = getPropertiesFromAllMembers(members, baseProperties),
+            average = Object.keys(allMembersProperties).reduce((output, key) => {
+                output[key] = Math.round(allMembersProperties[key].reduce((sum,val) => {
+                    return sum + val
+                },0) / members.length);
+                return output;
+            }, {});
             
-        let average = getPropertiesFromAllMembers(group.members.list(), baseProperties);
-        
-        // get averages
-        average = Object.keys(average).reduce((output, key) => {
-            output[key] = Math.round(average[key].reduce((sum,val) => {return sum + val},0) / memberCount);
-            return output;
-        }, {});
-        
-        if(property){
-            return average[property];
-        }
-        else {
-            return average;
-        }
+        return property ? average[property] : average;
     },
     min: (property = false) => {
         
+        if(!state.element.members.list().length){
+            return new Error(`the group ${state.element.name.get()} has no members.`);
+        }
+        
         const baseProperties = copyObject(playerPropertyConfig),
-            group = state.element;
+            members = state.element.members.list(),
+            allMembersProperties = getPropertiesFromAllMembers(members, baseProperties),
+            min = Object.keys(allMembersProperties).reduce((output, key) => {
+                output[key] = Math.min.apply(this, allMembersProperties[key]);
+                return output;
+            }, {});
         
-        let min = getPropertiesFromAllMembers(group.members.list(), baseProperties);
-        
-        // get minimum
-        min = Object.keys(min).reduce((output, key) => {
-            output[key] = Math.min.apply(this, min[key]);
-            return output;
-        }, {});
-        
-        if(property){
-            return min[property];
-        }
-        else {
-            return min;
-        }
+        return property ? min[property] : min;
     },
     max: (property = false) => {
         
+        if(!state.element.members.list().length){
+            return new Error(`the group ${state.element.name.get()} has no members.`);
+        }
+        
         const baseProperties = copyObject(playerPropertyConfig),
-            group = state.element;
+            group = state.element,
+            allMembersProperties = getPropertiesFromAllMembers(group.members.list(), baseProperties),
+            max = Object.keys(allMembersProperties).reduce((output, key) => {
+                output[key] = Math.max.apply(this, allMembersProperties[key]);
+                return output;
+            }, {});
         
-        let max = getPropertiesFromAllMembers(group.members.list(), baseProperties);
-        
-        // get minimum
-        max = Object.keys(max).reduce((output, key) => {
-            output[key] = Math.max.apply(this, max[key]);
-            return output;
-        }, {});
-        
-        if(property){
-            return max[property];
-        }
-        else {
-            return max;
-        }
+        return property ? max[property] : max;
     }
 });
 
