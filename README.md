@@ -1,2 +1,3 @@
-# node-rpg
-A nodejs framework for text based role-playing games
+# rpg-library
+
+A `nodejs` library for text-based role-playing games. work in progress ❤️
