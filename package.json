@@ -1,5 +1,5 @@
 {
-  "name": "node-rpg",
+  "name": "rpg-library",
   "version": "0.0.1",
   "description": "A nodejs framework for text based role-playing games",
   "main": "lib/rpg.js",
@@ -13,10 +13,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/toser/node-rpg.git"
+    "url": "https://github.com/toser/node-rpg-library.git"
   },
   "bugs": {
-    "url": "https://github.com/toser/node-rpg.git/issues"
+    "url": "https://github.com/toser/node-rpg-library.git/issues"
   },
   "author": "Toni Feistauer",
   "license": "MIT",
