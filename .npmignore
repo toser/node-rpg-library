@@ -1,8 +1,8 @@
 /node_modules
 /.idea
 /browse.VC.db
-/lib
+/src
 /test
 /rpg.db
 /fix_toni_and_force-push.sh
-npm-debug.log
+/npm-debug.log
