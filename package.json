@@ -9,7 +9,8 @@
   "scripts": {
     "cli": "npm run build && node bin/rpg-cli",
     "start": "npm run build && node lib/index.js",
-    "build": "babel src -d lib"
+    "build": "babel src -d lib",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
