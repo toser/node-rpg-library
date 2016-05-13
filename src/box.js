@@ -70,9 +70,7 @@ const newBox = (boxName) => {
     return state.element;
 };
 
-export const createBox = (average) => {
-
-    // ToDo: pass team to get averages
+export const createBox = ({average}) => {
 
     const weaponsCount = randomInt(2, 0),
         armorCount = randomInt(2, 0),
@@ -86,40 +84,38 @@ export const createBox = (average) => {
 
     for (i = 0; i < weaponsCount; i++) {
 
-        // ToDo: get averages from team
         items.push(item.createWeapon({
-            rank: 3,
+            rank: average.rank,
             slots: 6,
-            attack: 10,
+            attack: average.attack,
             defense: 0,
-            dexterity: 5,
+            dexterity: average.dexterity,
             speed: -5
         }));
     }
 
     for (i = 0; i < armorCount; i++) {
 
-        // ToDo: get averages from team
         items.push(item.createArmor({
-            rank: 3,
+            rank: average.rank,
             slots: 4,
-            attack: 3,
-            defense: 10,
-            dexterity: 5,
+            attack: 2,
+            defense: average.defense,
+            dexterity: average.dexterity,
             speed: -3
         }));
     }
 
     for (i = 0; i < consumableCount; i++) {
 
-        // ToDo: get averages from team
         items.push(item.createConsumable({
-            rank: 3,
+            rank: average.rank,
             slots: 2,
-            attack: 10,
-            defense: 10,
-            dexterity: 10,
-            speed: 10
+            attack: average.attack,
+            defense: average.defense,
+            dexterity: average.dexterity,
+            speed: average.speed,
+            health: average.health
         }));
     }
 
@@ -128,4 +124,16 @@ export const createBox = (average) => {
     });
 
     return box;
+};
+
+export const createBoxes = (options, count) => {
+
+    let i = 0,
+        boxes = [];
+
+    for (i; i < count; i++) {
+        boxes.push(createBox(options));
+    }
+
+    return boxes;
 };

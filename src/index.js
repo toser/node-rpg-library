@@ -9,11 +9,7 @@ let toni = player.createPlayer('Toni', 'cat'),
     tom = player.createPlayer('Tom', 'dog'),
     basti = player.createPlayer('Bastl', 'cat'),
     myGroup = group.createGroup('Fighter of Glory');
-    
 
-let myPlace = place.createPlace('Home of the brave');
-
-console.log(myGroup.info.average());
 
 toni.rank.up(3);
 tom.attack.up(15);
@@ -22,7 +18,14 @@ myGroup.members.add(toni);
 myGroup.members.add(tom);
 myGroup.members.add(basti);
 
-let myBox = box.createBox(myGroup.info.average());
+
+let myPlace = place.createPlace({
+    group: myGroup
+});
+
+console.log(myPlace.summary.get());
+
+/*let myBox = box.createBox({average: myGroup.info.average()});
 
 console.log(myGroup.info.average());
 console.log(myGroup.info.min());
@@ -30,11 +33,11 @@ console.log(myGroup.info.max());
 
 console.log(myGroup.info.average('defense'));
 console.log(myGroup.info.min('rank'));
-console.log(myGroup.info.max('rank'));
-            
+console.log(myGroup.info.max('rank'));*/
 
-myPlace.boxes.add(myBox);
-myPlace.groups.add(myGroup);
+
+/*myPlace.boxes.add(myBox);
+myPlace.groups.add(myGroup);*/
 
 
 /*console.log('box----: \n', JSON.stringify(myBox.summary.items.short(), null, 2));

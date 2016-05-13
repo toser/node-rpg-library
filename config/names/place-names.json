@@ -1,0 +1,47 @@
+{
+  "pre1": [
+    "small",
+    "big",
+    "tiny",
+    "strange",
+    "dirty"
+  ],
+  "pre2": [
+    "magic",
+    "simple",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "main": [
+    "castle",
+    "house",
+    "hut",
+    "cave",
+    "chateau",
+    "manor",
+    "foxhole",
+    "booth",
+    "dungeon",
+    "mushroom"
+  ],
+  "post": [
+    "of the king",
+    "where the orcs live",
+    "of your mother",
+    "in the woods",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ]
+}

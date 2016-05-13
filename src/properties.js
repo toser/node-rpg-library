@@ -109,9 +109,18 @@ export const list = (property, parent, state = parent, typeFilters = []) => {
  * add element to array
  */
 export const addToList = (arr, state) => {
-    
+
     return (element) => {
-        arr.push(element);
+
+        if(element.constructor === Array) {
+            element.forEach(function (item) {
+                arr.push(item);
+            });
+        }
+        else {
+            arr.push(element);
+        }
+
         return state.element;
     };
 };
@@ -127,9 +136,9 @@ export const addToList = (arr, state) => {
 export const removeFromList = (arr, state) => {
 
     return (id) => {
-        
+
         let index = arr.map(i => i.id.get()).indexOf(id);
-            
+
         if(index !== -1) {
             arr.splice(index, 1);
         }
