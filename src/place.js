@@ -66,17 +66,17 @@ const newPlace = (name_in) => {
     return state.element;
 };
 
-export const createPlace = ({group, name = createName(placeNames)}) => {
+export const createPlace = ({ group, name = createName(placeNames)}) => {
 
     let place = newPlace(name),
         numberOfBoxes = randomInt(10, 1),
         numberOfEnemyGroups = randomInt(4, 1);
 
-    console.log(numberOfBoxes);
+    //console.log(numberOfBoxes);
 
     let a = box.createBoxes({average: group.info.average()}, numberOfBoxes);
 
-    console.log(a);
+    //console.log(a);
 
     place.boxes.add(box.createBoxes({average: group.info.average()}, numberOfBoxes))
         .groups.add(group);

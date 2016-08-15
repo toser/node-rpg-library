@@ -1,16 +1,14 @@
 
 import * as Group from '../group';
 
-export const cmdRegExp = /^(start) *(\S[ \S]+\S){0,1}$/;
+export const cmdRegExp = /^(start)$/;
 
 export const run = (player, command, world) => {
-    if (world.playerGroup) {
-        return [ `group already exists! Named "${world.playerGroup.name.get()}"` ];
+    if (!world.playerGroup) {
+        return [ `no group exists!` ];
+    } else if (world.getPlayers().length === 0) {
+        return [ `no character in group!` ];
     }
-    let matches = cmdRegExp.exec(command),
-        group = matches[2] ? matches[2].trim() : null;
-    if (!group) // no group-name given
-        return [ `name your group, ${player}!` ];
-    world.playerGroup = Group.createGroup(group);
-    return [ `${player} started the group "${group}"! Let's see what adventure may lie upon you...` ];
+    world.init();
+    return [ `Good luck, have fun...` ];
 };

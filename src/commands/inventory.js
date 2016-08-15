@@ -11,6 +11,6 @@ export const run = (player, command, world) => {
         });
         return output; // this should never fail
     } else {
-        return [ `${player} is not a registered player` ];
+        return [ `${player} is not a registered player.` ];
     }
 };

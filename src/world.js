@@ -12,9 +12,19 @@ const newWorld = (databaseFile) => {
     state.database = new Database({ filename: databaseFile || 'rpg.db', autoload: true });
     state.world = {
         playerGroup: null,
-        getPlayers: function(n) { return (state.world.playerGroup ? state.world.playerGroup.members.list('name', n) : []); },
         places: {},
-        currentPlace: null
+        currentPlace: null,
+        getPlayers: n => { return (state.world.playerGroup ? state.world.playerGroup.members.list('name', n) : []); },
+        init: () => {
+            let spawnLocation = '0,0';
+            state.world.places[spawnLocation] = Place.createPlace({ group : state.world.playerGroup });
+            state.world.currentPlace = spawnLocation;
+        },
+        reset: () => {
+            state.world.playerGroup = null;
+            state.world.places = [];
+            state.world.currentPlace = null;
+        }
     };
 
     return state.world;
@@ -22,15 +32,5 @@ const newWorld = (databaseFile) => {
 
 export const createWorld = (databaseFile) => {
 
-    let world = newWorld(databaseFile),
-        spawnLocation = '0,0',
-        spawnPlace = Place.createPlace(spawnLocation);
-
-    world.places[spawnLocation] = spawnPlace;
-    world.currentPlace = spawnLocation;
-
-    //TODO: remove when done... (:
-    spawnPlace.boxes.add(Box.createBox());
-
-    return world;
+    return newWorld(databaseFile);
 }

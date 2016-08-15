@@ -2,13 +2,13 @@
 import * as Player from '../player';
 import * as Race from '../race';
 
-export const cmdRegExp = /^(register|reg|r) *(\S+){0,1}$/; // " *" vs ( \S+)   :-(
+export const cmdRegExp = /^(character|char|c) *(\S+){0,1}$/; // " *" vs ( \S+)   :-(
 
 export const run = (player, command, world) => {
     if (!world.playerGroup) {
-        return [ `no group for players started.` ];
+        return [ `no group for players started .. yet.` ];
     } else if (world.getPlayers(player).length > 0) {
-        return [ `character "${player}" already exists` ];
+        return [ `character "${player}" already exists!` ];
     } else {
         let matches = cmdRegExp.exec(command),
             race = matches[2] ? matches[2].trim() : null;

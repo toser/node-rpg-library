@@ -5,6 +5,7 @@ import * as Start from './commands/start';
 import * as Stop from './commands/stop';
 import * as Register from './commands/register';
 import * as Group from './commands/group';
+import * as Player from './commands/character';
 import * as Where from './commands/where';
 import * as Boxes from './commands/boxes';
 import * as Move from './commands/move';
@@ -20,6 +21,7 @@ const commands = [
     Register,
     //
     Group,
+    Player,
     Where,
     Boxes,
     //
