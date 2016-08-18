@@ -1,6 +1,7 @@
 /node_modules
 /.idea
 /browse.VC.db
+/.vscode
 /lib
 /test
 /rpg.db

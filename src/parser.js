@@ -3,7 +3,6 @@ import * as Help from './commands/help';
 import * as Quit from './commands/quit';
 import * as Start from './commands/start';
 import * as Stop from './commands/stop';
-import * as Register from './commands/register';
 import * as Group from './commands/group';
 import * as Player from './commands/character';
 import * as Where from './commands/where';
@@ -18,7 +17,6 @@ const commands = [
     Quit,
     Start,
     Stop,
-    Register,
     //
     Group,
     Player,
