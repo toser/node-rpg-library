@@ -26,7 +26,6 @@ const name = (state) => Object.assign({}, properties.mixed('name', state)),
 
 const summary = state => ({
 
-
     get: () => {
 
         const item = state.element;

@@ -5,7 +5,7 @@ export const run = (player, command, world) => {
     if (!world.currentPlace) {
         return [ `world is not initialized .. yet.` ];
     } else if (world.getPlayers(player).length > 0) {
-        return [ world.places[world.currentPlace].summary.boxes.get() ]; // this should never fail
+        return [ world.places[world.currentPlace].summary.boxes.short() ]; // this should never fail
     } else {
         return [ `${player} is not a registered player.` ];
     }

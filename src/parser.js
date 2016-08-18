@@ -11,6 +11,7 @@ import * as Boxes from './commands/boxes';
 import * as Move from './commands/move';
 import * as Pick from './commands/pickup';
 import * as Inventory from './commands/inventory';
+import * as Open from './commands/open';
 
 const commands = [
     //
@@ -26,6 +27,7 @@ const commands = [
     Boxes,
     //
     Move,
+    Open,
     Pick,
     Inventory
 ];

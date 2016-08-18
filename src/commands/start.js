@@ -1,6 +1,4 @@
 
-import * as Group from '../group';
-
 export const cmdRegExp = /^(start)$/;
 
 export const run = (player, command, world) => {

@@ -74,13 +74,11 @@ export const createBox = ({average}) => {
 
     const weaponsCount = randomInt(2, 0),
         armorCount = randomInt(2, 0),
-        consumableCount = randomInt(3, 0);
+        consumableCount = randomInt(3, 1);
 
     let box = newBox(createName(boxNames)),
         items = [],
         i;
-
-    //ToDo: also set dexterity value to open box (or find box - idk yet)
 
     for (i = 0; i < weaponsCount; i++) {
 

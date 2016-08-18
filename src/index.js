@@ -13,6 +13,7 @@ let toni = player.createPlayer('Toni', 'cat'),
 
 toni.rank.up(3);
 tom.attack.up(15);
+tom.dexterity.up(15);
 
 myGroup.members.add(toni);
 myGroup.members.add(tom);
@@ -23,63 +24,29 @@ let myPlace = place.createPlace({
     group: myGroup
 });
 
-console.log(myPlace.summary.get());
 
-/*let myBox = box.createBox({average: myGroup.info.average()});
+console.log(myPlace.boxes.list()[0].items.list()[0].id.get());
 
-console.log(myGroup.info.average());
-console.log(myGroup.info.min());
-console.log(myGroup.info.max());
+const allBoxes = myPlace.boxes.list();
 
-console.log(myGroup.info.average('defense'));
-console.log(myGroup.info.min('rank'));
-console.log(myGroup.info.max('rank'));*/
+const firstBox = allBoxes[0];
 
+actions.openBox(firstBox, toni);
 
-/*myPlace.boxes.add(myBox);
-myPlace.groups.add(myGroup);*/
+console.log(firstBox.open.get());
 
+console.log(firstBox.items.list()[0].name.get());
+console.log(firstBox.items.list()[0].id.get());
 
-/*console.log('box----: \n', JSON.stringify(myBox.summary.items.short(), null, 2));
-console.log('toni----: \n', JSON.stringify(toni.summary.items.short(), null, 2));
-
-actions.itemTransfer(myBox, toni, myBox.items.list()[0].id.get());
-
-console.log('box----: \n', JSON.stringify(myBox.summary.items.short(), null, 2));
-console.log('toni----: \n', JSON.stringify(toni.summary.items.short(), null, 2));*/
+actions.itemTransfer(firstBox, toni, firstBox.items.list()[0].id.get());
 
 
-/*console.log(JSON.stringify(myPlace.summary.short(), null, 2));
-console.log(JSON.stringify(myPlace.summary.get(), null, 2));
-console.log(JSON.stringify(myPlace.summary.boxes.short(), null, 2));
-console.log(JSON.stringify(myPlace.summary.boxes.get(), null, 2));
-console.log(JSON.stringify(myPlace.summary.groups.short(), null, 2));
-console.log(JSON.stringify(myPlace.summary.groups.get(), null, 2));*/
-
-/*console.log(`------- ${myBox.name.get()} Summary:`);
- console.log('short', myBox.summary.short());
- console.log('get', myBox.summary.get());
- console.log('items get', myBox.summary.items.get());
- console.log('items short', myBox.summary.items.short());*/
+console.log(toni.summary.long());
 
 
-/*myBox.items.list().map(item => item).forEach((item) => {
-    toni.items.add(item);
-    myBox.items.remove(item.name.get());
-});*/
+
+//actions.itemTransfer(myPlace.boxes.list()[0].items.list()[0]);
 
 
-/*console.log(`------- ${toni.name.get()} Summary:`);
- console.log('short', toni.summary.short());
- console.log('get', toni.summary.get());
- console.log('long', toni.summary.long());
- console.log('items get', toni.summary.items.get());
- console.log('items short', toni.summary.items.short());*/
 
-
-/*console.log(`------- ${myGroup.name.get()} Summary:`);
-console.log('short', JSON.stringify(myGroup.summary.short(), null, 2));
-console.log('get', JSON.stringify(myGroup.summary.get(), null, 2));
-console.log('members get', JSON.stringify(myGroup.summary.members.get(), null, 2));
-console.log('members short', JSON.stringify(myGroup.summary.members.short(), null, 2));
-console.log('members long', JSON.stringify(myGroup.summary.members.long(), null, 2));*/
+//console.log(myPlace.summary.get());
