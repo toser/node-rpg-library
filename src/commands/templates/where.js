@@ -32,13 +32,13 @@ export const template = function (data) {
     }
     else if(numBoxes > 1) {
         const boxList = data.place.boxes.reduce((list, item) => `${list} a ${item.name},`, '').slice(0, -1).trim();
-        textBoxes = `I've found ${boxList}. Maybe we find something usefull in there.`
+        textBoxes = `I've found ${boxList}. Maybe we find something useful in there.`
     }
 
 
 
     return (
-`${data.player.name} slowly inspects the ${data.place.name}. Sneaking arround and looking in all corners of this place, ${textWeapon}
+`${data.player.name} slowly inspects the ${data.place.name}. Sneaking around and looking in all corners of this place, ${textWeapon}
 After a few moments ${data.player.name} turns to ${data.group.name}, and says: "Fellows, ${textGroups}
 ${textBoxes}"`);
 
