@@ -34,7 +34,7 @@ const summary = state => ({
         return {
             name: box.name.get(),
             open: box.open.get(),
-            items: box.items.list().map(item => item.summary.short())
+            items: box.items.list().map(item => item.summary.get())
         };
     },
     short: () => {

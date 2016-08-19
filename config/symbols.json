@@ -1,0 +1,33 @@
+{
+    "race": {
+        "cat": "😼",
+        "dog": "🐶",
+        "human": "😏",
+        "orc": "👿",
+        "butterfly": "Ƹ̵̡Ӝ̵̨̄Ʒ",
+        "snail": "🐌"
+    },
+
+    "itemType": {
+        "weapon": "🗡",
+        "armor": "🛡",
+        "consumable": "🍴",
+        "unknown": "❓"
+    },
+
+    "propertie": {
+        "rank": "🎖",
+        "slots": "👜",
+        "health": "♥",
+        "attack": "👊",
+        "defense": "✋",
+        "dexterity": "👌",
+        "speed": "👣",
+        "time": "⏳"
+    },
+
+    "state": {
+        "open": "🔓",
+        "close": "🔒"
+    }
+}

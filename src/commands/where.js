@@ -1,16 +1,19 @@
 
-import {template} from './templates/where';
+import * as template from './templates/where';
 
-export const cmdRegExp = /^(where|where am i|where are we|w)$/;
+export const cmdRegExp = /^(where|where am i|where are we|w|explore)$/;
 
 export const run = (player, command, world) => {
     if (!world.currentPlace) {
         return [ `world is not initialized .. yet.` ];
     } else if (world.getPlayers(player).length > 0) {
 
-        const activePlayer = world.getPlayers(player)[0];
+        const activePlayer = world.getPlayers(player)[0],
+            place = world.places[world.currentPlace];
 
-        return template({
+        place.explored.set(true);
+
+        return template.success({
             player: activePlayer.summary.get(),
             weapons: activePlayer.summary.items.short(),
             group: world.playerGroup.summary.get(),

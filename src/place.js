@@ -6,10 +6,10 @@ import * as box from './box';
 import {createName} from './name';
 
 const config = getConfig('../config/place.json', __dirname);
-
-const name = state => Object.assign({}, properties.mixed('name', state, state));
 const placeNames = getConfig('../config/names/place-names.json', __dirname);
 
+const name = state => Object.assign({}, properties.mixed('name', state, state));
+const explored = state => Object.assign({}, properties.boolean('explored', state, state));
 
 const boxes = state => Object.assign({},
     // get default list functionality
@@ -57,6 +57,7 @@ const newPlace = (name_in) => {
 
     state.element = {
         name: name(state),
+        explored: explored(state),
         boxes: boxes(state),
         groups: groups(state),
         summary: summary(state),

@@ -1,5 +1,6 @@
 {
   "name": "name",
   "boxes": [],
-  "groups": []
+  "groups": [],
+  "explored": false
 }

@@ -33,6 +33,7 @@ const summary = state => ({
         return {
             name: item.name.get(),
             type: item.type.get(),
+            slots: item.slots.get(),
             rank: item.rank.get(),
             health: item.health.get(),
             attack: item.attack.get(),
@@ -50,6 +51,7 @@ const summary = state => ({
             name: item.name.get(),
             id: item.id.get(),
             type: item.type.get(),
+            slots: item.slots.get(),
             rank: item.rank.get(),
             health: item.health.get(),
             attack: item.attack.get(),

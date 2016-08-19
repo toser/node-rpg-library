@@ -4,21 +4,27 @@
     "big",
     "tiny",
     "strange",
-    "dirty"
+    "dirty",
+    "humble",
+    "little",
+    "red",
+    "violet",
+    "ruined",
+    "shattered",
+    "demolished",
+    "damaged"
   ],
   "pre2": [
     "magic",
     "simple",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    ""
+    "disgusting",
+    "nasty",
+    "wicked",
+    "enchanted",
+    "ugly",
+    "dinky",
+    "ordinary",
+    "destroyed"
   ],
   "main": [
     "castle",
@@ -30,18 +36,26 @@
     "foxhole",
     "booth",
     "dungeon",
-    "mushroom"
+    "mushroom",
+    "tower",
+    "fort",
+    "tomb",
+    "pyramid",
+    "obelisk",
+    "memorial",
+    "monument",
+    "grave"
   ],
   "post": [
     "of the king",
     "where the orcs live",
     "of your mother",
     "in the woods",
-    "",
-    "",
-    "",
-    "",
-    "",
-    ""
+    "made of ivory",
+    "called Greenflower",
+    "on the hill",
+    "of Toser",
+    "called Durdnee",
+    "in Jena"
   ]
 }

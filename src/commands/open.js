@@ -1,5 +1,6 @@
 
 import {openBox} from '../actions';
+import * as templateBox from './templates/openBox';
 
 export const cmdRegExp = /^(open|o) (\S[ \S]+\S)+$/;
 
@@ -21,7 +22,14 @@ export const run = (player, command, world) => {
         const boxOpened = openBox(foundBox[0], activePlayer);
 
         if(boxOpened) {
-            return `${player} opened ${name}, containing: \n ${JSON.stringify(foundBox[0].summary.items.get(), null, 2)}`;
+            return templateBox.success({
+                player: activePlayer.summary.get(),
+                box: foundBox[0].summary.short(),
+                items: foundBox[0].summary.items.get()
+            });
+
+
+            //`${player} opened ${name}, containing: \n ${JSON.stringify(foundBox[0].summary.items.get(), null, 2)}`;
         }
         return `${player} could not open ${name}.`;
 

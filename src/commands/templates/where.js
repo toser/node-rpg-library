@@ -1,11 +1,5 @@
 
-
-
-
-
-export const template = function (data) {
-
-    console.log(JSON.stringify(data,null,2));
+export function success(data) {
 
     const numGroups = data.place.groups.length,
         numBoxes = data.place.boxes.length,
@@ -28,17 +22,17 @@ export const template = function (data) {
     }
 
     if(numBoxes === 1) {
-        textBoxes = `I've found a ${data.place.boxes[0].name}. Maybe we find something usefull in it.`
+        textBoxes = `I've found a ${data.place.boxes[0].name}. Maybe we find something useful in it.`
     }
     else if(numBoxes > 1) {
         const boxList = data.place.boxes.reduce((list, item) => `${list} a ${item.name},`, '').slice(0, -1).trim();
-        textBoxes = `I've found ${boxList}. Maybe we find something usefull in there.`
+        textBoxes = `I've found ${boxList}. Maybe we find something useful in there.`
     }
 
 
 
     return (
-`${data.player.name} slowly inspects the ${data.place.name}. Sneaking arround and looking in all corners of this place, ${textWeapon}
+`${data.player.name} slowly inspects the ${data.place.name}. Sneaking around and looking in all corners of this place, ${textWeapon}
 After a few moments ${data.player.name} turns to ${data.group.name}, and says: "Fellows, ${textGroups}
 ${textBoxes}"`);
 
