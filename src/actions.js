@@ -95,8 +95,13 @@ export const itemTransfer = (from, to, id) => {
 export const openBox = (box, player) => {
 
     const items = box.summary.items.get(),
-        boxDexterity = (items.reduce((dex, item) => dex + item.dexterity, 0) / items.length) * .95,
-        canOpen = player.dexterity.get() >= boxDexterity;
+        boxDexterity = (items.reduce((dex, item) => dex + item.dexterity, 0) / items.length) * .95;
+    let canOpen = player.dexterity.get() >= boxDexterity;
+
+    // always open when box is already open
+    if(box.open.get()) {
+        canOpen = true;
+    }
 
     box.open.set(canOpen);
 
