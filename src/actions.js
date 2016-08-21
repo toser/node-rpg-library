@@ -15,12 +15,12 @@ export const itemTransfer = (from, to, id) => {
     // check if [from] has open property
     // if from.open is false return false
     if('open' in from && !from.open.get()) {
-        return false
+        return false;
     }
     // check if [to] has open property
     // if to.open is false return false
     if('open' in to && !to.open.get()) {
-        return false
+        return false;
     }
 
     // [from] has item
@@ -49,9 +49,20 @@ export const itemTransfer = (from, to, id) => {
 export const openBox = (box, player) => {
 
     const items = box.summary.items.get(),
-        boxDexterity = (items.reduce((dex, item) => dex + item.dexterity, 0) / items.length) * .75,
+        boxDexterity = (items.reduce((dex, item) => dex + item.dexterity, 0) / items.length) * .95,
         canOpen = player.dexterity.get() >= boxDexterity;
 
     box.open.set(canOpen);
-    return canOpen;
+
+    if(canOpen) {
+        return {
+            success: true
+        };
+    }
+    else {
+        return {
+            success: false,
+            error: 'dexterity'
+        }
+    }
 };

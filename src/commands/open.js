@@ -11,27 +11,33 @@ export const run = (player, command, world) => {
     } else if (world.getPlayers(player).length > 0) {
 
         const matches = cmdRegExp.exec(command),
+            place = world.places[world.currentPlace],
             activePlayer = world.getPlayers(player)[0],
             name = matches[2].trim(),
-            foundBox = world.places[world.currentPlace].boxes.list('name', name);
+            foundBox = place.boxes.list('name', name);
 
         if(!foundBox.length) {
-            return `${name} is not available.`;
+            return templateBox.fail({
+                player: activePlayer.summary.get(),
+                boxName: name,
+                place: place.summary.get()
+            }, 'availability');
         }
 
         const boxOpened = openBox(foundBox[0], activePlayer);
 
-        if(boxOpened) {
+        if(boxOpened.success) {
             return templateBox.success({
                 player: activePlayer.summary.get(),
                 box: foundBox[0].summary.short(),
                 items: foundBox[0].summary.items.get()
             });
-
-
-            //`${player} opened ${name}, containing: \n ${JSON.stringify(foundBox[0].summary.items.get(), null, 2)}`;
         }
-        return `${player} could not open ${name}.`;
+        return templateBox.fail({
+                player: activePlayer.summary.get(),
+                boxName: name,
+                place: place.summary.get()
+            }, boxOpened.error);
 
     } else {
         return [ `${player} is not a registered player.` ];

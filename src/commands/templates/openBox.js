@@ -18,3 +18,15 @@ export function success(data) {
 
     return `${pre}${content}`;
 }
+
+export function fail(data, type) {
+
+    switch(type) {
+        case 'availability':
+            return `${data.player.name} could not find ${data.boxName} at ${data.place.name}.`;
+        case 'dexterity':
+            return `${data.player.name} is not dexterous enough to open ${data.boxName}.`;
+        default:
+            return `${data.player.name} can't open ${data.boxName}`;
+    }
+}
