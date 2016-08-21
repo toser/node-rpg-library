@@ -58,7 +58,6 @@ const items = (state) => Object.assign({},
         ]
     ),
     {
-
         /**
          * override add item default functionality
          *
@@ -66,11 +65,11 @@ const items = (state) => Object.assign({},
          * @returns {{name, type, health, rank, attack, defense, dexterity, speed, slots, items, event: *, describe: state.element.describe}|*}
          */
         add: (item) => {
-            
-            if(item.collectible.get() && 
+
+            if(item.collectible.get() &&
                 state.element.rank.get() >= item.rank.get() &&
                 state.element.slots.free() >= item.slots.get()){
-                    
+
                 state.items.push(item);
             }
 
@@ -90,6 +89,7 @@ const summary = state => ({
             name: player.name.get(),
             type: player.type.get(),
             rank: player.rank.get(),
+            slots: player.slots.free(),
             health: player.health.get(),
             attack: player.attack.get(),
             defense: player.defense.get(),
@@ -115,6 +115,7 @@ const summary = state => ({
             name: player.name.get(),
             type: player.type.get(),
             rank: player.rank.get(),
+            slots: player.slots.free(),
             health: player.health.get(),
             attack: player.attack.get(),
             defense: player.defense.get(),

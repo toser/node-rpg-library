@@ -10,35 +10,81 @@
  */
 export const itemTransfer = (from, to, id) => {
 
-    let item = from.items.list('id', id);
+    const foundItem = from.items.list('id', id);
+
+    // [from] has item
+    if(!foundItem.length){
+        return {
+            success: false,
+            error: 'item unavailable'
+        };
+    }
+
+    // get first found item
+    const item = foundItem[0];
 
     // check if [from] has open property
     // if from.open is false return false
-    if('open' in from && !from.open.get()) {
-        return false;
-    }
-    // check if [to] has open property
-    // if to.open is false return false
-    if('open' in to && !to.open.get()) {
-        return false;
+    if('open' in from &&
+        !from.open.get()) {
+
+        return {
+            success: false,
+            error: 'from open'
+        };
     }
 
-    // [from] has item
-    if(!item.length){
-        return false;
+    // check if [to] has open property
+    // if to.open is false return false
+    if('open' in to &&
+        !to.open.get()) {
+
+        return {
+            success: false,
+            error: 'to open'
+        };
+    }
+
+    // check if [to] and [item] has rank property
+    // if [to]s rank is not high enougth return a fail
+    if('rank' in to &&
+        'rank' in item &&
+        to.rank.get() < item.rank.get()) {
+
+        return {
+            success: false,
+            error: 'rank'
+        };
+    }
+
+    // check if [to] and [item] has slots property
+    // if [to] has not enougth slots free return a fail
+    if('slots' in to &&
+        'slots' in item &&
+        to.slots.free() < item.slots.get()) {
+
+        return {
+            success: false,
+            error: 'slots'
+        };
     }
 
     // add item to [to]s item list
-    to.items.add(item[0]);
+    to.items.add(item);
 
     // check if [to] has the item now
     // then remove it from [from]s item list
     if(to.items.list('id', id).length) {
         from.items.remove(id);
-        return true;
+        return {
+            success: true
+        };
     }
     else {
-        return false;
+        return {
+            success: false,
+            error: 'unknown'
+        };
     }
 };
 

@@ -25,23 +25,42 @@ let myPlace = place.createPlace({
 });
 
 
-console.log(myPlace.boxes.list()[0].items.list()[0].id.get());
+//console.log(myPlace.boxes.list()[0].items.list()[0].id.get());
 
 const allBoxes = myPlace.boxes.list();
 
 const firstBox = allBoxes[0];
 
-actions.openBox(firstBox, toni);
+//actions.openBox(firstBox, toni);
 
-console.log(firstBox.open.get());
+firstBox.open.set(true);
 
-console.log(firstBox.items.list()[0].name.get());
-console.log(firstBox.items.list()[0].id.get());
+console.log('BOX OPEN?', firstBox.open.get());
 
-actions.itemTransfer(firstBox, toni, firstBox.items.list()[0].id.get());
+const item = firstBox.items.list()[0];
+
+//item.rank.up(100);
+//item.slots.up(70);
+
+console.log('ITEM:', `${item.name.get()} - rank ${item.rank.get()} - slots ${item.slots.get()}`);
+
+console.log('TONI:', `${toni.name.get()} - rank ${toni.rank.get()} - slots ${toni.slots.get()}`);
 
 
-console.log(toni.summary.long());
+console.log('PICK: ', actions.itemTransfer(firstBox, toni, item.id.get()).error);
+
+
+/*console.log(firstBox.items.list()[0].name.get());
+console.log(firstBox.items.list()[0].id.get());*/
+
+
+
+
+
+/*actions.itemTransfer(firstBox, toni, firstBox.items.list()[0].id.get());
+
+
+console.log(toni.summary.long());*/
 
 
 
