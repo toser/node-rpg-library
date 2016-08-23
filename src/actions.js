@@ -1,3 +1,5 @@
+import * as path from './path';
+
 
 /**
  * transfer an item from one thing to another
@@ -116,4 +118,42 @@ export const openBox = (box, player) => {
             error: 'dexterity'
         }
     }
+};
+
+
+export const openDoor = ({door, player, place}) => {
+
+    let canOpen = true; // ToDo: add conditions here
+
+    if(door.open.get()) {
+        canOpen = true;
+    }
+
+    door.open.set(canOpen);
+
+    console.log('#### ', door.path);
+
+    if(!door.path.get()){
+
+        console.log("------->>", path.createPath({
+                currentPlace: place
+            }));
+
+        door.path.set(path.createPath({
+                currentPlace: place
+            }));
+    }
+
+    if(canOpen) {
+        return {
+            success: true
+        };
+    }
+    else {
+        return {
+            success: false,
+            error: 'unknown'
+        }
+    }
+
 };

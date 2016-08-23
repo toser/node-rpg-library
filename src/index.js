@@ -2,6 +2,8 @@ import * as player from './player';
 import * as group from './group';
 import * as box from './box';
 import * as place from './place';
+import * as door from './door';
+import * as path from './path';
 import * as actions from './actions';
 
 
@@ -39,15 +41,30 @@ console.log('BOX OPEN?', firstBox.open.get());
 
 const item = firstBox.items.list()[0];
 
+
+console.log(JSON.stringify(myPlace.summary.doors.get(),null,2));
+
+actions.openDoor(myPlace.doors.list()[0], toni);
+
+console.log(JSON.stringify(myPlace.summary.doors.get(),null,2));
+
+const myPath = path.createPath({
+    currentPlace: myPlace
+});
+
+
+console.log(JSON.stringify(myPath.summary.get(),null,2));
+
+
 //item.rank.up(100);
 //item.slots.up(70);
 
-console.log('ITEM:', `${item.name.get()} - rank ${item.rank.get()} - slots ${item.slots.get()}`);
+/*console.log('ITEM:', `${item.name.get()} - rank ${item.rank.get()} - slots ${item.slots.get()}`);
 
 console.log('TONI:', `${toni.name.get()} - rank ${toni.rank.get()} - slots ${toni.slots.get()}`);
 
 
-console.log('PICK: ', actions.itemTransfer(firstBox, toni, item.id.get()).error);
+console.log('PICK: ', actions.itemTransfer(firstBox, toni, item.id.get()).error);*/
 
 
 /*console.log(firstBox.items.list()[0].name.get());

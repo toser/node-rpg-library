@@ -4,7 +4,7 @@ import {getConfig} from 'helptos';
 const symbols = getConfig('../../../config/symbols.json', __dirname);
 
 export function success(data) {
-    return `${data.from.name} droped ${data.item.name} to ${data.to.name}`;
+    return `${data.from.name} dropped ${data.item.name} to ${data.to.name}`;
 }
 
 export function fail(data, type) {

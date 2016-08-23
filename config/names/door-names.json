@@ -1,0 +1,41 @@
+{
+  "pre1": [
+    "small",
+    "big",
+    "tiny",
+    "strange",
+    "dirty",
+    "humble",
+    "little",
+    "red",
+    "violet",
+    "ruined",
+    "shattered",
+    "demolished",
+    "damaged"
+  ],
+  "pre2": [
+    "magic",
+    "simple",
+    "disgusting",
+    "nasty",
+    "wicked",
+    "enchanted",
+    "ugly",
+    "dinky",
+    "ordinary",
+    "destroyed"
+  ],
+  "main": [
+    "door",
+    "trapdoor",
+    "hatch",
+    "hatchway",
+    "window",
+    "gate",
+    "gateway",
+    "port",
+    "vent"
+  ],
+  "post": []
+}

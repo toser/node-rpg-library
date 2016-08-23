@@ -8,8 +8,8 @@ import * as item from './item';
 const config = getConfig('../config/box.json', __dirname);
 const boxNames = getConfig('../config/names/box-names.json', __dirname);
 
-const name = state => Object.assign({}, properties.mixed('name', state, state));
-const open = state => Object.assign({}, properties.boolean('open', state, state));
+const name = state => Object.assign({}, properties.mixed('name', state));
+const open = state => Object.assign({}, properties.boolean('open', state));
 
 const items = state => Object.assign({},
     // get default list functionality

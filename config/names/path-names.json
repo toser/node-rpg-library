@@ -1,0 +1,44 @@
+{
+  "pre1": [
+    "muddy",
+    "dirty",
+    "nice",
+    "rainy",
+    "wet",
+    "curvy",
+    "twisted",
+    "crazy"
+  ],
+  "pre2": [
+    "stone",
+    "grass",
+    "dirt",
+    "little",
+    "serpentine",
+    "winding"
+  ],
+  "main": [
+    "way",
+    "street",
+    "path",
+    "road",
+    "route",
+    "track",
+    "lane",
+    "course",
+    "avenue",
+    "parkway",
+    "alley",
+    "catwalk"
+  ],
+  "post": [
+    "over a hill",
+    "through the mountains",
+    "through a forrest",
+    "through a dark forrest",
+    "through a field",
+    "through a mine",
+    "over mountains",
+    "over bridges"
+  ]
+}

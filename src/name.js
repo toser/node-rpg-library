@@ -15,17 +15,17 @@ export const createName = (names) => {
 
     let name = '';
 
-    if (!!parseInt(ran2To1.random())) {
+    if (names.pre1.length && !!parseInt(ran2To1.random())) {
         name += names.pre1[randomInt(names.pre1.length - 1)] + ' ';
     }
 
-    if (!!parseInt(ran1To2.random())) {
+    if (names.pre2.length && !!parseInt(ran1To2.random())) {
         name += names.pre2[randomInt(names.pre2.length - 1)] + ' ';
     }
 
     name += names.main[randomInt(names.main.length - 1)] + ' ';
 
-    if (!!parseInt(ran1To2.random())) {
+    if (names.post.length && !!parseInt(ran1To2.random())) {
         name += names.post[randomInt(names.post.length - 1)] + ' ';
     }
 

@@ -23,7 +23,7 @@ export function fail(data, type) {
 
     switch(type) {
         case 'availability':
-            return `${data.player.name} could not find ${data.boxName} at ${data.place.name}.`;
+            return `${data.player.name} could not find a box called "${data.boxName}" at ${data.place.name}.`;
         case 'dexterity':
             return `${data.player.name} is not dexterous enough to open ${data.boxName}.`;
         default:
