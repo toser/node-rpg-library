@@ -47,6 +47,6 @@ After a few moments ${data.player.name} turns to ${data.group.name}, and says: "
         { action:'message', delay:500, text:`${textIntro}` },
         { action:'message', delay:2000, text:`${textBoxes}` },
         { action:'message', delay:4000, text:`${textDoors}` },
-        { action:'enable', delay:4100 }
+        { action:'enable', delay:4200 }
     ];
 }
