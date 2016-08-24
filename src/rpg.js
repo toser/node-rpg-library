@@ -13,7 +13,7 @@ const newRPG = (databaseFile) => {
 
     state.world = World.createWorld(databaseFile);
     state.rpg = {
-        parse : (player, command) => { return Parser.parse(player, command, state.world); }
+        parse : (player, command, write) => { return Parser.parse(player, command, state.world, write); }
     };
 
     return state.rpg;
