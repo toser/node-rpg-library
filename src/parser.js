@@ -2,6 +2,7 @@
 import {EOL} from 'os';
 import * as Help from './commands/help';
 import * as Quit from './commands/quit';
+import * as Debug from './commands/debug';
 import * as Start from './commands/start';
 import * as Stop from './commands/stop';
 import * as Group from './commands/group';
@@ -18,6 +19,7 @@ const commands = [
     //
     Help,
     Quit,
+    Debug,
     Start,
     Stop,
     //
@@ -33,13 +35,19 @@ const commands = [
     Inventory
 ];
 
+let debug = false,
+    disabled = false; // disable parsing
+
 /**
  * parses a given command and executes the according effects in the given world
  * @param {String} command
  * @param {Object} world
  * @return {Array} array of strings containing response messages
  */
-export let parse = (player, command, world, write) => {
+export let parse = (player, command, world, write, indicateUserInput) => {
+
+    if (disabled)
+        return false; // proceed?
 
     let proceed = true,
         actions = [];
@@ -56,7 +64,7 @@ export let parse = (player, command, world, write) => {
     // check the actions & act accordingly
     if (actions.length) {
         let output = [];
-        proceed = actions.every((current, index) => {
+        actions.forEach((current, index) => {
             if (typeof current === 'string') {
                 // <SIMPLE_MESSAGE_ACTION>
                 output.push(current);
@@ -64,10 +72,31 @@ export let parse = (player, command, world, write) => {
             } else if (typeof current === 'object') {
                 // <OBJECT_ACTION>
                 if ('action' in current) {
-                    let action = current.action;
-                    if (action === 'quit') {
+                    if (current.action === 'message') {
+                        setTimeout(() => {
+                            write(current.text);
+                        }, current.delay || 0);
+                    } else if (current.action === 'quit') {
                         output.push('bye');
-                        return false;
+                        proceed = false;
+                    } else if (current.action === 'disable' || current.action === 'enable') {
+                        setTimeout(() => {
+                            if (current.action === 'disable') {
+                                disabled = true;
+                                if (debug)
+                                    write('DISABLED');
+                            } else /* if current.action === 'enable') */ {
+                                disabled = false;
+                                if (debug)
+                                    write('ENABLED');
+                                if (indicateUserInput)
+                                    indicateUserInput(); // in CLI show '>'
+                            }
+                        }, current.delay || 0);
+                        proceed = false;
+                    } else if (current.action === 'debug') {
+                        debug = !debug;
+                        write('DEBUG', debug ? 'ON' : 'OFF');
                     } else {
                         output.push('unknown action :(');
                     }
@@ -80,7 +109,6 @@ export let parse = (player, command, world, write) => {
                 output.push('unknown action type :(');
                 // </UNKNOWN_ACTION>
             }
-            return true;
         });
         if (output.length)
             write(output.join(EOL));
@@ -88,5 +116,6 @@ export let parse = (player, command, world, write) => {
         write('unknown command :(');
     }
 
-    return !proceed;
+    if (indicateUserInput && proceed)
+        indicateUserInput(); // in CLI show '>'
 };

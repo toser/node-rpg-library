@@ -39,12 +39,14 @@ export function success(data) {
         textDoors = `There are several ways out of this place:\n${doorList}.`;
     }
 
-    return (
-`${data.player.name} slowly inspects the ${data.place.name}. Sneaking around and looking in all corners of this place, ${textWeapon}
-After a few moments ${data.player.name} turns to ${data.group.name}, and says: "Fellows, ${textGroups}
+    let textIntro = `${data.player.name} slowly inspects the ${data.place.name}. Sneaking around and looking in all corners of this place, ${textWeapon}
+After a few moments ${data.player.name} turns to ${data.group.name}, and says: "Fellows, ${textGroups}`;
 
-${textBoxes}
-
-${textDoors}"`);
-
+    return [
+        { action:'disable' },
+        { action:'message', delay:500, text:`${textIntro}` },
+        { action:'message', delay:2000, text:`${textBoxes}` },
+        { action:'message', delay:4000, text:`${textDoors}` },
+        { action:'enable', delay:4100 }
+    ];
 }
