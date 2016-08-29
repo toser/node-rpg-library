@@ -4,12 +4,10 @@ import {getConfig} from 'helptos';
 const symbols = getConfig('../../../config/symbols.json', __dirname);
 
 export function success(data) {
-    return `${data.player.name} opened ${data.door.name}
 
---${data.door.path.name.split().map(x => "-")}--
-| ${data.door.path.name}.  \\n
-| ${data.door.path.length}m  /\n
---${data.door.path.name.split().map(x => "-")}--`;
+    const pathTo = data.door.path.places.filter(x => x !== data.place.name)[0];
+
+    return `${data.player.name} opened the ${data.door.name} and sees:\nA ${data.door.path.length}m long ${data.door.path.name} to a ${pathTo}`;
 }
 
 export function fail(data, type) {

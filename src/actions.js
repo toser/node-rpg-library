@@ -1,4 +1,7 @@
 import * as path from './path';
+import * as box from './box';
+import {newLocation} from './world';
+import {randomInt} from 'random-tools';
 
 
 /**
@@ -131,14 +134,7 @@ export const openDoor = ({door, player, place}) => {
 
     door.open.set(canOpen);
 
-    console.log('#### ', door.path);
-
     if(!door.path.get()){
-
-        console.log("------->>", path.createPath({
-                currentPlace: place
-            }));
-
         door.path.set(path.createPath({
                 currentPlace: place
             }));
@@ -155,5 +151,40 @@ export const openDoor = ({door, player, place}) => {
             error: 'unknown'
         }
     }
+};
 
+export const leave = ({door, group, place, world}) => {
+
+    const foundPlace = door.path.get()
+                        .places.list()
+                        .filter(x => x.name.get() !== place.name.get());
+
+    const numberOfBoxes = randomInt(7, 1);
+
+    if(!foundPlace.length) {
+        return false;
+    }
+
+    const newPlace = foundPlace[0];
+
+    if(!newPlace.location.get()) {
+        newPlace.location.set(newLocation(world, place.location.get()));
+    }
+
+    const location = newPlace.location.get();
+
+    // timing stuff
+
+    if(!newPlace.boxes.length) {
+        newPlace.boxes.add(box.createBoxes({
+            average: group.info.average()
+        }, numberOfBoxes));
+    }
+
+    newPlace.groups.add(group);
+    newPlace.location.set(location);
+    world.places[location] = newPlace;
+    world.currentPlace = location;
+
+    place.groups.remove(group.id.get());
 };

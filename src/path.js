@@ -63,10 +63,12 @@ const newPath = (name_in) => {
 export const createPath = ({currentPlace, name = createName(pathNames)}) => {
 
     let path = newPath(name),
-        newPlace = place.createPlace({});
+        newPlace = place.createPlace({}),
+        newPlaceDoor = newPlace.doors.list()[0];
 
     path.places.add(currentPlace);
     path.places.add(newPlace);
+    newPlaceDoor.path.set(path);
 
     return path;
 }

@@ -58,16 +58,6 @@ export const run = (player, command, world) => {
             place: place
         }, itemPicked.error);
 
-
-
-
-
-
-        /*if(itemPicked) {
-            return `${player} picked up ${item} from ${from}.\n\nNew inventory:\n${JSON.stringify(activePlayer.summary.items.short(), null, 2)}`;
-        }
-        return `${player} could not pick up ${item} from ${from}.`;*/
-
     } else {
         return [ `${player} is not a registered player.` ];
     }

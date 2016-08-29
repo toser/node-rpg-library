@@ -10,6 +10,7 @@ const config = getConfig('../config/place.json', __dirname);
 const placeNames = getConfig('../config/names/place-names.json', __dirname);
 
 const name = state => Object.assign({}, properties.mixed('name', state, state));
+const location = state => Object.assign({}, properties.mixed('location', state, state));
 const explored = state => Object.assign({}, properties.boolean('explored', state, state));
 
 const boxes = state => Object.assign({},
@@ -43,6 +44,7 @@ const summary = state => ({
 
         return {
             name: place.name.get(),
+            location: place.location.get(),
             groups: place.groups.list().map(group => group.summary.short()),
             boxes: place.boxes.list().map(box => box.summary.short()),
             doors: place.doors.list().map(door => door.summary.short())
@@ -67,10 +69,9 @@ const newPlace = (state_in) => {
 
     let state = Object.assign(copyObject(config), state_in);
 
-    //state.name = name_in;
-
     state.element = {
         name: name(state),
+        location: location(state),
         explored: explored(state),
         boxes: boxes(state),
         doors: doors(state),
@@ -89,7 +90,7 @@ export const createPlace = ({ group, path, name}) => {
         }),
         numberOfBoxes = randomInt(10, 1),
         numberOfEnemyGroups = randomInt(4, 1),
-        numberOfDoors = randomInt(4,1);
+        numberOfDoors = randomInt(5,2);
 
     place.doors.add(door.createDoors({}, numberOfDoors));
 
@@ -101,7 +102,6 @@ export const createPlace = ({ group, path, name}) => {
     if(path && place.doors.list().length) {
         place.doors.list()[0].path.add(path);
     }
-
 
     return place;
 }

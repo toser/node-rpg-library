@@ -12,6 +12,7 @@ import * as Pick from './commands/pickup';
 import * as Drop from './commands/drop';
 import * as Inventory from './commands/inventory';
 import * as Open from './commands/open';
+import * as Leave from './commands/leave';
 
 const commands = [
     //
@@ -26,6 +27,7 @@ const commands = [
     Boxes,
     //
     Move,
+    Leave,
     Open,
     Pick,
     Drop,

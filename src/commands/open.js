@@ -79,13 +79,11 @@ function openDoorAction({door, activePlayer, place, name}) {
         player: activePlayer,
         place});
 
-
-    console.log(JSON.stringify(door.summary.get(), null, 2));
-
     if(doorOpened.success) {
         return templateDoor.success({
             player: activePlayer.summary.get(),
             door: door.summary.get(),
+            place: place.summary.get()
         });
     }
     return templateDoor.fail({

@@ -1,32 +1,34 @@
 import {EventEmitter} from 'events';
 import {getConfig, copyObject, getFirstByType} from 'helptos';
 import * as properties from './properties';
+import * as uuid from './uuid';
 
 const config = getConfig('../config/group.json', __dirname);
 const playerPropertyConfig = getConfig('../config/player.json', __dirname).properties;
 
 
 const getPropertiesFromAllMembers = (members, baseProperties) => {
-    
+
     return members.reduce((output, member) => {
-            
+
             output = Object.keys(output).reduce((out, key) => {
-                
+
                 // for the first member create array for each property
                 if(!(out[key] instanceof Array)){
                     out[key] = [];
                 }
-                
+
                 out[key].push(member[key].get());
                 return out;
             }, output);
-            
+
             return output;
-            
+
         }, baseProperties);
 };
 
 const name = state => Object.assign({}, properties.mixed('name', state));
+const id = state => Object.assign({}, properties.fixed('id', state));
 
 const members = state => Object.assign({},
     // get default list functionality
@@ -40,13 +42,13 @@ const members = state => Object.assign({},
  * get infos from group by its member infos (eg. average from properties)
  */
 const info = state => ({
-    
+
     average: (property = false) => {
-        
+
         if(!state.element.members.list().length){
             return new Error(`the group ${state.element.name.get()} has no members.`);
         }
-        
+
         const baseProperties = copyObject(playerPropertyConfig),
             members = state.element.members.list(),
             allMembersProperties = getPropertiesFromAllMembers(members, baseProperties),
@@ -56,15 +58,15 @@ const info = state => ({
                 },0) / members.length);
                 return output;
             }, {});
-            
+
         return property ? average[property] : average;
     },
     min: (property = false) => {
-        
+
         if(!state.element.members.list().length){
             return new Error(`the group ${state.element.name.get()} has no members.`);
         }
-        
+
         const baseProperties = copyObject(playerPropertyConfig),
             members = state.element.members.list(),
             allMembersProperties = getPropertiesFromAllMembers(members, baseProperties),
@@ -72,15 +74,15 @@ const info = state => ({
                 output[key] = Math.min.apply(this, allMembersProperties[key]);
                 return output;
             }, {});
-        
+
         return property ? min[property] : min;
     },
     max: (property = false) => {
-        
+
         if(!state.element.members.list().length){
             return new Error(`the group ${state.element.name.get()} has no members.`);
         }
-        
+
         const baseProperties = copyObject(playerPropertyConfig),
             group = state.element,
             allMembersProperties = getPropertiesFromAllMembers(group.members.list(), baseProperties),
@@ -88,7 +90,7 @@ const info = state => ({
                 output[key] = Math.max.apply(this, allMembersProperties[key]);
                 return output;
             }, {});
-        
+
         return property ? max[property] : max;
     }
 });
@@ -132,9 +134,11 @@ const newGroup = (groupName) => {
     let state = copyObject(config);
 
     state.name = groupName;
+    state.id = uuid.generate();
 
     state.element = {
         name: name(state),
+        id: id(state),
         members: members(state),
         summary: summary(state),
         info: info(state),
@@ -145,6 +149,6 @@ const newGroup = (groupName) => {
 };
 
 export const createGroup = (groupName, creatureGroup) => {
-    
+
     return newGroup(groupName);
 };

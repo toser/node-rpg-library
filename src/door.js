@@ -18,7 +18,7 @@ const summary = state => ({
         return {
             name: door.name.get(),
             open: door.open.get(),
-            path: door.path.get()
+            path: door.path.get().summary.get()
         };
     },
     short: () => {
