@@ -1,6 +1,6 @@
 
 import {EOL} from 'os';
-import {flatten} from 'lodash';
+import {flatten, reject, chain} from 'lodash';
 import * as Help from './commands/help';
 import * as Quit from './commands/quit';
 import * as Debug from './commands/debug';
@@ -41,13 +41,8 @@ const commands = [
 let debug = false,
     disabled = false; // disable parsing
 
-
 function isSimpleString(action) {
     return typeof action === 'string';
-}
-
-function isNotSimpleString(action) {
-    return !(typeof action === 'string');
 }
 
 function actionIs(type) {
@@ -55,14 +50,6 @@ function actionIs(type) {
         return typeof action === 'object' &&
             'action' in action &&
             action.action === type;
-    }
-}
-
-function actionIsNot(type) {
-    return action => {
-        return !(typeof action === 'object' &&
-            'action' in action &&
-            action.action === type);
     }
 }
 
@@ -141,12 +128,14 @@ export let parse = (player, command, world, write, indicateUserInput) => {
         });
 
     // fallback
-    actions.filter(isNotSimpleString)
-        .filter(actionIsNot('message'))
-        .filter(actionIsNot('disable'))
-        .filter(actionIsNot('enable'))
-        .filter(actionIsNot('quit'))
-        .filter(actionIsNot('debug'))
+    chain(actions)
+        .reject(isSimpleString)
+        .reject(actionIs('message'))
+        .reject(actionIs('disable'))
+        .reject(actionIs('enable'))
+        .reject(actionIs('quit'))
+        .reject(actionIs('debug'))
+        .value()
         .forEach(action => {
             write(JSON.stringify(action, null, 2));
         });
