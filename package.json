@@ -25,6 +25,7 @@
   "license": "MIT",
   "dependencies": {
     "helptos": "^1.0.10",
+    "lodash": "^4.15.0",
     "nedb": "^1.8.0",
     "random-tools": "0.0.5"
   },

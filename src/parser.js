@@ -1,5 +1,6 @@
 
 import {EOL} from 'os';
+import {flatten} from 'lodash';
 import * as Help from './commands/help';
 import * as Quit from './commands/quit';
 import * as Debug from './commands/debug';
@@ -40,6 +41,31 @@ const commands = [
 let debug = false,
     disabled = false; // disable parsing
 
+
+function isSimpleString(action) {
+    return typeof action === 'string';
+}
+
+function isNotSimpleString(action) {
+    return !(typeof action === 'string');
+}
+
+function actionIs(type) {
+    return action => {
+        return typeof action === 'object' &&
+            'action' in action &&
+            action.action === type;
+    }
+}
+
+function actionIsNot(type) {
+    return action => {
+        return !(typeof action === 'object' &&
+            'action' in action &&
+            action.action === type);
+    }
+}
+
 /**
  * parses a given command and executes the according effects in the given world
  * @param {String} command
@@ -48,76 +74,89 @@ let debug = false,
  */
 export let parse = (player, command, world, write, indicateUserInput) => {
 
+    //console.log('asd ', _);
+
     if (disabled)
         return false; // proceed?
 
-    let proceed = true,
-        actions = [];
+    let proceed = true;
 
     // run each command and get its possible action(s)
-    for (let cmd in commands) {
-        let regExp = commands[cmd].cmdRegExp || null;
-        if (regExp && regExp.test(command)) {
-            let res = commands[cmd].run(player, command, world);
-            actions = actions.concat(res);
-        }
+    const actions = flatten(
+        commands.filter(c => !!c.cmdRegExp) // only commands with a regex
+            .filter(c => c.cmdRegExp.test(command)) // only commands that match
+            .map(c => c.run(player, command, world)) // run commands
+    );
+
+    // string
+    const simpleStrings = actions.filter(isSimpleString);
+    if(simpleStrings.length) {
+        write(simpleStrings.join(EOL));
     }
 
-    // check the actions & act accordingly
-    if (actions.length) {
-        let output = [];
-        actions.forEach((current, index) => {
-            if (typeof current === 'string') {
-                // <SIMPLE_MESSAGE_ACTION>
-                output.push(current);
-                // </SIMPLE_MESSAGE_ACTION>
-            } else if (typeof current === 'object') {
-                // <OBJECT_ACTION>
-                if ('action' in current) {
-                    if (current.action === 'message') {
-                        setTimeout(() => {
-                            write(current.text);
-                        }, current.delay || 0);
-                    } else if (current.action === 'quit') {
-                        output.push('bye');
-                        proceed = false;
-                    } else if (current.action === 'disable' || current.action === 'enable') {
-                        setTimeout(() => {
-                            if (current.action === 'disable') {
-                                disabled = true;
-                                if (debug)
-                                    write('DISABLED');
-                            } else /* if current.action === 'enable') */ {
-                                disabled = false;
-                                if (debug)
-                                    write('ENABLED');
-                                if (indicateUserInput)
-                                    indicateUserInput(); // in CLI show '>'
-                            }
-                        }, current.delay || 0);
-                        proceed = false;
-                    } else if (current.action === 'debug') {
-                        debug = !debug;
-                        write('DEBUG', debug ? 'ON' : 'OFF');
-                    } else {
-                        output.push('unknown action :(');
-                    }
-                } else {
-                    output.push(JSON.stringify(current, null, 2));
-                }
-                // </OBJECT_ACTION>
-            } else {
-                // <UNKNOWN_ACTION>
-                output.push('unknown action type :(');
-                // </UNKNOWN_ACTION>
-            }
+    // message
+    actions.filter(actionIs('message'))
+        .forEach(action => {
+            setTimeout(() => {
+                write(action.text);
+            }, action.delay || 0);
         });
-        if (output.length)
-            write(output.join(EOL));
-    } else {
+
+    // disable
+    actions.filter(actionIs('disable'))
+        .forEach(action => {
+            setTimeout(() => {
+                disabled = true;
+                if (debug)
+                    write('DISABLED');
+            }, action.delay || 0);
+            proceed = false;
+        });
+
+    // enable
+    actions.filter(actionIs('enable'))
+        .forEach(action => {
+            setTimeout(() => {
+                disabled = false;
+                if (debug)
+                    write('ENABLED');
+                if (indicateUserInput)
+                    indicateUserInput(); // in CLI show '>'
+            }, action.delay || 0);
+            proceed = false;
+        });
+
+    // quit
+    actions.filter(actionIs('quit'))
+        .forEach(action => {
+            write('bye');
+            proceed = false;
+        });
+
+    // debug
+    actions.filter(actionIs('debug'))
+        .forEach(action => {
+            debug = !debug;
+            write('DEBUG', debug ? 'ON' : 'OFF');
+        });
+
+    // fallback
+    actions.filter(isNotSimpleString)
+        .filter(actionIsNot('message'))
+        .filter(actionIsNot('disable'))
+        .filter(actionIsNot('enable'))
+        .filter(actionIsNot('quit'))
+        .filter(actionIsNot('debug'))
+        .forEach(action => {
+            write(JSON.stringify(action, null, 2));
+        });
+
+    // command not found
+    if(!actions.length) {
         write('unknown command :(');
     }
 
-    if (indicateUserInput && proceed)
+    if (indicateUserInput && proceed) {
         indicateUserInput(); // in CLI show '>'
+    }
 };
