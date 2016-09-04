@@ -1,6 +1,6 @@
 
 import {EOL} from 'os';
-import {flatten, reject, chain} from 'lodash';
+import {chain} from 'lodash';
 import * as Help from './commands/help';
 import * as Quit from './commands/quit';
 import * as Debug from './commands/debug';
@@ -53,6 +53,14 @@ function actionIs(type) {
     }
 }
 
+function commandMatches(command) {
+    return c => !!c.cmdRegExp && c.cmdRegExp.test(command);
+}
+
+function runCommand(player, command, world) {
+    return c => c.run(player, command, world);
+}
+
 /**
  * parses a given command and executes the according effects in the given world
  * @param {String} command
@@ -68,12 +76,10 @@ export let parse = (player, command, world, write, indicateUserInput) => {
 
     let proceed = true;
 
-    // run each command and get its possible action(s)
-    const actions = flatten(
-        commands.filter(c => !!c.cmdRegExp) // only commands with a regex
-            .filter(c => c.cmdRegExp.test(command)) // only commands that match
-            .map(c => c.run(player, command, world)) // run commands
-    );
+    const actions = chain(commands)
+        .filter(commandMatches(command))
+        .flatMap(runCommand(player, command, world))
+        .value();
 
     // string
     const simpleStrings = actions.filter(isSimpleString);
