@@ -7,7 +7,7 @@ export function success(data) {
 
     const pathTo = data.door.path.places.filter(x => x !== data.place.name)[0];
 
-    return `${data.player.name} opened the ${data.door.name} and sees:\nA ${data.door.path.length}m long ${data.door.path.name} to a ${pathTo}`;
+    return `${data.player.name} opened the ${data.door.name} and sees:\nA ${data.door.path.distance}km long ${data.door.path.name} to a ${pathTo}.\nThe jurney will take ${data.time} Minutes.`;
 }
 
 export function fail(data, type) {

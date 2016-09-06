@@ -14,11 +14,16 @@ const summary = state => ({
 
     get: () => {
         const door = state.element;
+        let path = door.path.get();
+
+        if (path) {
+            path = door.path.get().summary.get();
+        }
 
         return {
             name: door.name.get(),
             open: door.open.get(),
-            path: door.path.get().summary.get()
+            path: path
         };
     },
     short: () => {

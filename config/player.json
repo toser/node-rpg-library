@@ -6,7 +6,7 @@
     "attack": 0,
     "defense": 0,
     "dexterity": 0,
-    "speed": 0,
+    "speed": 4,
     "slots": 30
   },
   "items": []

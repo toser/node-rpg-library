@@ -8,7 +8,7 @@ const config = getConfig('../config/path.json', __dirname);
 const pathNames = getConfig('../config/names/path-names.json', __dirname);
 
 const name = state => Object.assign({}, properties.mixed('name', state));
-const length = state => Object.assign({}, properties.numerical('length', state));
+const distance = state => Object.assign({}, properties.numerical('distance', state));
 
 const places = state => Object.assign({},
     // get default list functionality
@@ -25,7 +25,7 @@ const summary = state => ({
 
         return {
             name: path.name.get(),
-            length: path.length.get(),
+            distance: path.distance.get(),
             places: path.places.list().map(place => place.summary.short())
         };
     },
@@ -34,7 +34,7 @@ const summary = state => ({
 
         return {
             name: state.element.name.get(),
-            length: path.length.get(),
+            distance: path.distance.get(),
         };
     },
     places: {
@@ -52,7 +52,7 @@ const newPath = (name_in) => {
 
     state.element = {
         name: name(state),
-        length: length(state),
+        distance: distance(state),
         places: places(state),
         summary: summary(state)
     };
@@ -64,8 +64,10 @@ export const createPath = ({currentPlace, name = createName(pathNames)}) => {
 
     let path = newPath(name),
         newPlace = place.createPlace({}),
-        newPlaceDoor = newPlace.doors.list()[0];
+        newPlaceDoor = newPlace.doors.list()[0],
+        pathDistance = randomInt(3000, 200) / 1000;
 
+    path.distance.up(pathDistance);
     path.places.add(currentPlace);
     path.places.add(newPlace);
     newPlaceDoor.path.set(path);

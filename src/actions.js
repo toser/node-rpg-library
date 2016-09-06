@@ -161,9 +161,9 @@ export const leave = ({door, group, place, world}) => {
 
     const numberOfBoxes = randomInt(7, 1);
 
-    if(!foundPlace.length) {
+    /*if(!foundPlace.length) {
         return false;
-    }
+    }*/
 
     const newPlace = foundPlace[0];
 
@@ -172,8 +172,6 @@ export const leave = ({door, group, place, world}) => {
     }
 
     const location = newPlace.location.get();
-
-    // timing stuff
 
     if(!newPlace.boxes.length) {
         newPlace.boxes.add(box.createBoxes({
@@ -187,4 +185,8 @@ export const leave = ({door, group, place, world}) => {
     world.currentPlace = location;
 
     place.groups.remove(group.id.get());
+
+    return {
+        success: true
+    };
 };

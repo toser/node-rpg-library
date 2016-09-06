@@ -10,6 +10,7 @@ import * as Group from './commands/group';
 import * as Player from './commands/character';
 import * as Where from './commands/where';
 import * as Boxes from './commands/boxes';
+import * as Doors from './commands/doors';
 import * as Move from './commands/move';
 import * as Pick from './commands/pickup';
 import * as Drop from './commands/drop';
@@ -29,6 +30,7 @@ const commands = [
     Player,
     Where,
     Boxes,
+    Doors,
     //
     Move,
     Leave,
@@ -69,8 +71,6 @@ function runCommand(player, command, world) {
  */
 export let parse = (player, command, world, write, indicateUserInput) => {
 
-    //console.log('asd ', _);
-
     if (disabled)
         return false; // proceed?
 
@@ -90,32 +90,56 @@ export let parse = (player, command, world, write, indicateUserInput) => {
     // message
     actions.filter(actionIs('message'))
         .forEach(action => {
+            let delay = action.delay;
+            if (debug) {
+                delay = 0;
+            }
             setTimeout(() => {
                 write(action.text);
-            }, action.delay || 0);
+            }, delay || 0);
+        });
+
+    // delay
+    actions.filter(actionIs('delay'))
+        .forEach(action => {
+            let delay = action.delay;
+            if (debug) {
+                delay = 0;
+            }
+            setTimeout(() => {
+                action.callback();
+            }, delay || 0);
         });
 
     // disable
     actions.filter(actionIs('disable'))
         .forEach(action => {
+            let delay = action.delay;
+            if (debug) {
+                delay = 0;
+            }
             setTimeout(() => {
                 disabled = true;
                 if (debug)
                     write('DISABLED');
-            }, action.delay || 0);
+            }, delay || 0);
             proceed = false;
         });
 
     // enable
     actions.filter(actionIs('enable'))
         .forEach(action => {
+            let delay = action.delay;
+            if (debug) {
+                delay = 0;
+            }
             setTimeout(() => {
                 disabled = false;
                 if (debug)
                     write('ENABLED');
                 if (indicateUserInput)
                     indicateUserInput(); // in CLI show '>'
-            }, action.delay || 0);
+            }, delay || 0);
             proceed = false;
         });
 
@@ -135,12 +159,15 @@ export let parse = (player, command, world, write, indicateUserInput) => {
 
     // fallback
     chain(actions)
-        .reject(isSimpleString)
-        .reject(actionIs('message'))
-        .reject(actionIs('disable'))
-        .reject(actionIs('enable'))
-        .reject(actionIs('quit'))
-        .reject(actionIs('debug'))
+        .reject(action => {
+            return isSimpleString(action) ||
+                actionIs('message')(action) ||
+                actionIs('delay')(action) ||
+                actionIs('disable')(action) ||
+                actionIs('enable')(action) ||
+                actionIs('quit')(action) ||
+                actionIs('debug')(action);
+        })
         .value()
         .forEach(action => {
             write(JSON.stringify(action, null, 2));

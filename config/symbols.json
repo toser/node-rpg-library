@@ -28,6 +28,13 @@
 
     "state": {
         "open": "🔓",
-        "close": "🔒"
+        "close": "🔒",
+        "locked": "🚷",
+        "walk": "🚶"
+    },
+
+    "presentational": {
+        "door": "🚪",
+        "clock": "🕙"
     }
 }

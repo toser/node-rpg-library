@@ -15,6 +15,7 @@ export const run = (player, command, world) => {
             place = world.places[world.currentPlace],
             activePlayer = world.getPlayers(player)[0],
             name = matches[2].trim(),
+            group = world.playerGroup,
             foundBox = place.boxes.list('name', name),
             foundDoor = place.doors.list('name', name);
 
@@ -32,7 +33,8 @@ export const run = (player, command, world) => {
                 door: foundDoor[0],
                 activePlayer,
                 place,
-                name
+                name,
+                group
             });
         }
 
@@ -72,17 +74,23 @@ function openBoxAction({box, activePlayer, place, name}) {
         }, boxOpened.error);
 }
 
-function openDoorAction({door, activePlayer, place, name}) {
+function openDoorAction({door, activePlayer, place, name, group}) {
 
     const doorOpened = openDoor({
-        door,
-        player: activePlayer,
-        place});
+            door,
+            player: activePlayer,
+            place
+        });
 
     if(doorOpened.success) {
+
+        const speed = group.info.average('speed'),
+            time = Math.round((door.path.get().distance.get() / speed) * 60);
+
         return templateDoor.success({
             player: activePlayer.summary.get(),
             door: door.summary.get(),
+            time: time,
             place: place.summary.get()
         });
     }

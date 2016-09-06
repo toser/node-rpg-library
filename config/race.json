@@ -24,7 +24,7 @@
         "attack": 7,
         "defense": 7,
         "dexterity": 7,
-        "speed": 7
+        "speed": 6
       }
     },
     {
@@ -42,7 +42,7 @@
         "attack": 3,
         "defense": 5,
         "dexterity": 10,
-        "speed": 10
+        "speed": 7
       }
     }
   ]
