@@ -14,6 +14,7 @@ export const run = (player, command, world) => {
         const matches = cmdRegExp.exec(command),
             place = world.places[world.currentPlace],
             group = world.playerGroup,
+            groupSum = group.summary.get(),
             name = matches[2].trim(),
             doors = place.doors.list('name', name);
 
@@ -23,16 +24,31 @@ export const run = (player, command, world) => {
 
         let door = doors[0];
 
-        const speed = group.info.average('speed'),
-            delay = (door.path.get().distance.get() / speed) * 60 * 60 * 1000;
-
         if(!door.open.get()) {
             return `${name} ist not open yet.`;
         }
 
+        console.log(JSON.stringify(groupSum.members , null, 2));
+
+        const /*interruptions = template.interrupt({
+                group: groupSum,
+                member: groupSum.members[Math.floor(Math.random() * groupSum.members.length)].name
+            }, Math.ceil(Math.random() * 5)),*/
+            foundPlace = door.path.get()
+                        .places.list()
+                        .filter(x => x.name.get() !== place.name.get());
+
+        let speed = group.info.average('speed'),
+            delay = (door.path.get().distance.get() / speed) * 60 * 60 * 1000;
+
+        //console.log(JSON.stringify(interruptions , null, 2));
+
         return [
             { action: 'disable' },
-            { action: 'message', delay: 500, text: 'start moving ' + delay },
+            { action: 'message', delay: 500, text: template.start({
+                group: group.summary.get(),
+                place: place.summary.get()
+            }) },
             { action: 'delay',
                 delay: delay,
                 callback: () => {
@@ -44,8 +60,11 @@ export const run = (player, command, world) => {
                     });
                 }
             },
-            { action: 'message', delay: delay, text: `done` },
-            { action: 'enable', delay: delay }
+            { action: 'message', delay: delay + 500, text: template.success({
+                group: group.summary.get(),
+                place: foundPlace[0].summary.get()
+            }) },
+            { action: 'enable', delay: delay + 500 }
         ];
 
     } else {
