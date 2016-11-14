@@ -28,8 +28,6 @@ export const run = (player, command, world) => {
             return `${name} ist not open yet.`;
         }
 
-        console.log(JSON.stringify(groupSum.members , null, 2));
-
         const /*interruptions = template.interrupt({
                 group: groupSum,
                 member: groupSum.members[Math.floor(Math.random() * groupSum.members.length)].name

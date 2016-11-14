@@ -6,14 +6,16 @@ import * as item from './item';
 
 const config = getConfig('../config/player.json', __dirname);
 
-const name = (state) => Object.assign({}, properties.mixed('name', state)),
-    type = (state) => Object.assign({}, properties.fixed('type', state)),
-    health = (state) => Object.assign({}, properties.numerical('health', state.properties, state)),
-    rank = (state) => Object.assign({}, properties.numerical('rank', state.properties, state)),
-    attack = (state) => Object.assign({}, properties.numerical('attack', state.properties, state)),
-    defense = (state) => Object.assign({}, properties.numerical('defense', state.properties, state)),
-    dexterity = (state) => Object.assign({}, properties.numerical('dexterity', state.properties, state)),
-    speed = (state) => Object.assign({}, properties.numerical('speed', state.properties, state));
+const name = (state) => properties.mixed('name', state),
+    type = (state) => properties.fixed('type', state),
+    health = (state) => properties.numericalPositive('health', state.properties, state),
+    rank = (state) => properties.numericalPositive('rank', state.properties, state),
+    attack = (state) => properties.numerical('attack', state.properties, state),
+    defense = (state) => properties.numerical('defense', state.properties, state),
+    dexterity = (state) => properties.numerical('dexterity', state.properties, state),
+    speed = (state) => properties.numerical('speed', state.properties, state),
+    weapon = (state) => properties.mixed('weapon', state),
+    armor = (state) => properties.mixed('armor', state);
 
 /**
  * anything you can do with your inventory slots
@@ -163,6 +165,8 @@ const newPlayer = (playerName, playerRace) => {
         speed: speed(state),
         slots: slots(state),
         items: items(state),
+        weapon: weapon(state),
+        armor: armor(state),
         summary: summary(state),
         event: new EventEmitter()
     };

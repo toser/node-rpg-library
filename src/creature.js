@@ -5,6 +5,7 @@ import {createName} from './name';
 import * as properties from './properties';
 import * as race from './race';
 import * as item from './item';
+import * as actions from './actions';
 
 function createItems(creature) {
 
@@ -62,11 +63,11 @@ const creatureNames = getConfig('../config/names/creature-names.json', __dirname
 
 const name = (state) => Object.assign({}, properties.mixed('name', state)),
     type = (state) => Object.assign({}, properties.fixed('type', state)),
-    health = (state) => Object.assign({}, properties.numerical('health', state.properties, state)),
-    rank = (state) => Object.assign({}, properties.numerical('rank', state.properties, state)),
+    health = (state) => Object.assign({}, properties.numericalPositive('health', state.properties, state)),
+    rank = (state) => Object.assign({}, properties.numericalPositive('rank', state.properties, state)),
     attack = (state) => Object.assign({}, properties.numerical('attack', state.properties, state)),
     defense = (state) => Object.assign({}, properties.numerical('defense', state.properties, state)),
-    aggression = (state) => Object.assign({}, properties.numerical('aggression', state.properties, state));
+    aggression = (state) => Object.assign({}, properties.numericalPositive('aggression', state.properties, state));
 
 /**
  * anything you can do with inventory items
@@ -94,6 +95,7 @@ const summary = state => ({
         const creature = state.element;
 
         return {
+            dead: isDead(creature),
             name: creature.name.get(),
             type: creature.type.get(),
             rank: creature.rank.get(),
@@ -108,6 +110,7 @@ const summary = state => ({
         const creature = state.element;
 
         return {
+            dead: isDead(creature),
             name: creature.name.get(),
             type: creature.type.get(),
             rank: creature.rank.get()
@@ -118,6 +121,7 @@ const summary = state => ({
         const creature = state.element;
 
         return {
+            dead: isDead(creature),
             name: creature.name.get(),
             type: creature.type.get(),
             rank: creature.rank.get(),
@@ -125,9 +129,9 @@ const summary = state => ({
             attack: creature.attack.get(),
             defense: creature.defense.get(),
             aggression: creature.aggression.get(),
-            weapon: creature.items.listWeapon().map(item => item.summary.short()),
-            armor: creature.items.listArmor().map(item => item.summary.short()),
-            consumable: creature.items.listConsumable().map(item => item.summary.short())
+            weapon: creature.items.listWeapon().map(item => item.summary.get()),
+            armor: creature.items.listArmor().map(item => item.summary.get()),
+            consumable: creature.items.listConsumable().map(item => item.summary.get())
         };
     },
     items: {
@@ -186,3 +190,49 @@ export const createCreature = (average) => {
 
     return creature;
 };
+
+export const createCreatures = ({average}, numberOfCreatures) => {
+
+    const creatures = [];
+
+    for (let i = 0; i < numberOfCreatures; i++) {
+        creatures.push(createCreature(average));
+    }
+
+    return creatures;
+};
+
+export const activate = (creature, group) => {
+
+    console.log('aggr', creature.aggression.get());
+    console.log('group', group.name.get());
+
+    if (creature.aggression.get() < 50) {
+        return;
+    }
+
+    const players = group.members.list();
+    console.log('group', group.members.list().map(x => x.name.get()));
+    const activePlayer = group.members.list()[Math.floor(Math.random() * players.length)];
+    console.log('active player', activePlayer.name.get());
+    const delay = (activePlayer.dexterity.get() / 100)
+        * (10 * (100 - creature.aggression.get()));
+
+    console.log('delay', delay);
+
+    setTimeout(() => {
+        fight(creature, activePlayer);
+    }, delay * 1000);
+
+    // console.log('activePlayer', activePlayer.name.get());
+
+    return creature;
+};
+
+export const fight = (creature, activePlayer) => {
+    console.log('attack -> ', creature.name.get(), '->', activePlayer.name.get());
+};
+
+export const activateMap = group => creature => activate(creature, group);
+export const isAggrassive = creature => creature.aggression.get() > 50;
+export const isDead = creature => creature.health.get() <= 0;

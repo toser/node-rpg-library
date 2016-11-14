@@ -11,12 +11,14 @@ import * as Player from './commands/character';
 import * as Where from './commands/where';
 import * as Boxes from './commands/boxes';
 import * as Doors from './commands/doors';
+import * as Creatures from './commands/creatures';
 import * as Move from './commands/move';
 import * as Pick from './commands/pickup';
 import * as Drop from './commands/drop';
 import * as Inventory from './commands/inventory';
 import * as Open from './commands/open';
 import * as Leave from './commands/leave';
+import * as Attack from './commands/attack';
 
 const commands = [
     //
@@ -31,12 +33,14 @@ const commands = [
     Where,
     Boxes,
     Doors,
+    Creatures,
     //
     Move,
     Leave,
     Open,
     Pick,
     Drop,
+    Attack,
     Inventory
 ];
 

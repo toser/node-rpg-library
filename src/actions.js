@@ -1,5 +1,6 @@
 import * as path from './path';
 import * as box from './box';
+import * as creature from './creature';
 import {newLocation} from './world';
 import {randomInt} from 'random-tools';
 
@@ -160,10 +161,7 @@ export const leave = ({door, group, place, world}) => {
                         .filter(x => x.name.get() !== place.name.get());
 
     const numberOfBoxes = randomInt(7, 1);
-
-    /*if(!foundPlace.length) {
-        return false;
-    }*/
+    const numberOfCreatures = randomInt(6, 1);
 
     const newPlace = foundPlace[0];
 
@@ -173,10 +171,16 @@ export const leave = ({door, group, place, world}) => {
 
     const location = newPlace.location.get();
 
-    if(!newPlace.boxes.length) {
+    if(!newPlace.boxes.list().length) {
         newPlace.boxes.add(box.createBoxes({
             average: group.info.average()
         }, numberOfBoxes));
+    }
+
+    if(!newPlace.creatures.list().length) {
+        newPlace.creatures.add(creature.createCreatures({
+            average: group.info.average()
+        }, numberOfCreatures));
     }
 
     newPlace.groups.add(group);
@@ -189,4 +193,46 @@ export const leave = ({door, group, place, world}) => {
     return {
         success: true
     };
+};
+
+export const attack = ({attacker, defender, weapon, armor}) => {
+
+    let power = attacker.attack.get(),
+        defense = defender.defense.get();
+
+    if (weapon) {
+        power += weapon.attack.get();
+    }
+
+    if (armor) {
+        defense += armor.defense.get();
+    }
+
+    console.log('power', power);
+    console.log('defense', defense);
+
+    if (power > defense) {
+        defender.health.down(power - defense);
+
+        return {
+            success: true,
+            data: {
+                power,
+                defense
+            }
+        };
+    } else {
+        if (armor) {
+            attacker.health.down(armor.attack.get());
+        }
+
+        return {
+            success: false,
+            data: {
+                power,
+                defense
+            },
+            error: 'defended'
+        }
+    }
 };

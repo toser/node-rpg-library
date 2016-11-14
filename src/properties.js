@@ -24,6 +24,31 @@ export const numerical = (property, parent, state = parent) => ({
 });
 
 /**
+ * basic getter and setter for numerical properties
+ *
+ * @param property
+ * @param parent
+ * @param state
+ */
+export const numericalPositive = (property, parent, state = parent) => ({
+    get: () => parent[property],
+    up: (val = 1) => {
+        parent[property] = parent[property] + val;
+        if (parent[property] < 0) {
+            parent[property] = 0;
+        }
+        return state.element;
+    },
+    down: (val = 1) => {
+        parent[property] = parent[property] - val;
+        if (parent[property] < 0) {
+            parent[property] = 0;
+        }
+        return state.element;
+    }
+});
+
+/**
  * get and set for mixed values
  *
  * @param property

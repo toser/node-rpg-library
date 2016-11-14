@@ -4,6 +4,7 @@ import {randomInt} from 'random-tools';
 import * as properties from './properties';
 import * as box from './box';
 import * as door from './door';
+import * as creature from './creature';
 import {createName} from './name';
 
 const config = getConfig('../config/place.json', __dirname);
@@ -37,6 +38,14 @@ const groups = state => Object.assign({},
     )
 );
 
+const creatures = state => Object.assign({},
+    // get default list functionality
+    properties.list(
+        'creatures',
+        state
+    )
+);
+
 const summary = state => ({
 
     get: () => {
@@ -47,7 +56,8 @@ const summary = state => ({
             location: place.location.get(),
             groups: place.groups.list().map(group => group.summary.short()),
             boxes: place.boxes.list().map(box => box.summary.short()),
-            doors: place.doors.list().map(door => door.summary.short())
+            doors: place.doors.list().map(door => door.summary.short()),
+            creatures: place.creatures.list().map(creature => creature.summary.short()),
         };
     },
     short: () => state.element.name.get(),
@@ -62,6 +72,11 @@ const summary = state => ({
     groups: {
         get: () => state.element.groups.list().map(group => group.summary.get()),
         short: () => state.element.groups.list().map(group => group.summary.short())
+    },
+    creatures: {
+        long: () => state.element.creatures.list().map(creature => creature.summary.long()),
+        get: () => state.element.creatures.list().map(creature => creature.summary.get()),
+        short: () => state.element.groups.list().map(creature => creature.summary.short())
     }
 });
 
@@ -76,6 +91,7 @@ const newPlace = (state_in) => {
         boxes: boxes(state),
         doors: doors(state),
         groups: groups(state),
+        creatures: creatures(state),
         summary: summary(state),
         event: new EventEmitter()
     };
@@ -90,13 +106,20 @@ export const createPlace = ({ group, path, name}) => {
         }),
         numberOfBoxes = randomInt(10, 1),
         numberOfEnemyGroups = randomInt(4, 1),
-        numberOfDoors = randomInt(5,2);
+        numberOfDoors = randomInt(5, 2),
+        numberOfCreatures = randomInt(4, 1);
 
     place.doors.add(door.createDoors({}, numberOfDoors));
 
     if(group) {
         place.boxes.add(box.createBoxes({average: group.info.average()}, numberOfBoxes))
+            .creatures.add(creature.createCreatures({average: group.info.average()}, numberOfCreatures))
             .groups.add(group);
+
+        place.creatures
+            .list()
+            .filter(creature.isAggrassive)
+            .map(creature.activateMap(group));
     }
 
     if(path && place.doors.list().length) {

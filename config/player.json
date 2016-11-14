@@ -9,5 +9,7 @@
     "speed": 4,
     "slots": 30
   },
-  "items": []
+  "items": [],
+  "weapon": null,
+  "armor": null
 }

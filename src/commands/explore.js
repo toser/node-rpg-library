@@ -1,7 +1,7 @@
 
 import * as template from './templates/where';
 
-export const cmdRegExp = /^(where|where am i|where are we|w|explore)$/;
+export const cmdRegExp = /^(explore)$/;
 
 export const run = (player, command, world) => {
     if (!world.currentPlace) {

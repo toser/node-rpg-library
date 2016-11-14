@@ -21,7 +21,7 @@ export function fail(data, type) {
         case 'rank':
             return `The rank of ${data.to.name} (${symbols.propertie.rank}${data.to.rank}) is not high enough to pick up ${data.item.name} (${symbols.propertie.rank}${data.item.rank})`;
         case 'slots':
-            return `${data.to.name} (${symbols.propertie.slots}${data.to.slots}) has not enough slots free to pick up ${data.item.name} (${symbols.propertie.slots}${data.to.slots})`;
+            return `${data.to.name} (${symbols.propertie.slots}${data.to.slots}) has not enough slots free to pick up ${data.item.name} (${symbols.propertie.slots}${data.item.slots})`;
         default:
             return `${data.to.name} can not pick up ${data.item.name} from ${data.from.name}`;
     }

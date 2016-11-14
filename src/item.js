@@ -15,14 +15,14 @@ const name = (state) => Object.assign({}, properties.mixed('name', state)),
     id = (state) => Object.assign({}, properties.fixed('id', state)),
     type = (state) => Object.assign({}, properties.fixed('type', state)),
     collectible = (state) => Object.assign({}, properties.boolean('name', state)),
-    rank = (state) => Object.assign({}, properties.numerical('rank', state.properties, state)),
-    slots = (state) => Object.assign({}, properties.numerical('slots', state.properties, state)),
+    rank = (state) => Object.assign({}, properties.numericalPositive('rank', state.properties, state)),
+    slots = (state) => Object.assign({}, properties.numericalPositive('slots', state.properties, state)),
     health = (state) => Object.assign({}, properties.numerical('health', state.properties, state)),
     attack = (state) => Object.assign({}, properties.numerical('attack', state.properties, state)),
     defense = (state) => Object.assign({}, properties.numerical('defense', state.properties, state)),
     dexterity = (state) => Object.assign({}, properties.numerical('dexterity', state.properties, state)),
     speed = (state) => Object.assign({}, properties.numerical('speed', state.properties, state)),
-    time = (state) => Object.assign({}, properties.numerical('time', state.properties, state));
+    time = (state) => Object.assign({}, properties.numericalPositive('time', state.properties, state));
 
 const summary = state => ({
 

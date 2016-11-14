@@ -4,7 +4,7 @@ import * as template from './templates/character';
 
 const characters = race.getRaces().map(x => player.createPlayer(x, x).summary.get());
 
-export const cmdRegExp = /^(character|char|c) *(\S+){0,1}$/; // " *" vs ( \S+)   :-(
+export const cmdRegExp = /^(character|char) *(\S+){0,1}$/; // " *" vs ( \S+)   :-(
 
 export const run = (playerName, command, world) => {
     if (!world.playerGroup) {

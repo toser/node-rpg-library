@@ -10,7 +10,10 @@ export function success(data) {
     let textWeapon = `only armed with fists and a threatening expression in the face.`,
         textGroups = `we are alone in this place. You can pack away your weapons and take a deep breath. It is save in here.`,
         textBoxes = `There is nothing to find in here. No chests, boxes or anything else.`,
-        textDoors = ``;
+        textDoors = ``,
+        textCreatures = `CREATURES: ${data.place.creatures.map(c => c.name).join(', ')}`;
+
+
 
     if(weapons.length) {
         textWeapon = `ready to defend the group with the ${weapons[0].name}.`;
@@ -45,6 +48,7 @@ After a few moments ${data.player.name} turns to ${data.group.name}, and says: "
     return [
         { action:'disable' },
         { action:'message', delay:500, text:`${textIntro}` },
+        { action:'message', delay:1500, text: `${textCreatures}`},
         { action:'message', delay:2000, text:`${textBoxes}` },
         { action:'message', delay:4000, text:`${textDoors}` },
         { action:'enable', delay:4200 }

@@ -8,7 +8,7 @@ const config = getConfig('../config/path.json', __dirname);
 const pathNames = getConfig('../config/names/path-names.json', __dirname);
 
 const name = state => Object.assign({}, properties.mixed('name', state));
-const distance = state => Object.assign({}, properties.numerical('distance', state));
+const distance = state => Object.assign({}, properties.numericalPositive('distance', state));
 
 const places = state => Object.assign({},
     // get default list functionality
